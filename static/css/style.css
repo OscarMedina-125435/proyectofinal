@@ -1,76 +1,131 @@
-/* --- Paleta de Colores --- */
+/* Variables de marca extraídas de edited-image.png */
 :root {
-    --guinda-bajo: #6a1b32;    /* Guinda institucional */
-    --guinda-hover: #4d1022;   /* Guinda más oscuro para estados hover */
-    --blanco-fondo: #ffffff;   /* Fondo de la página */
-    --texto-oscuro: #212529;   /* Texto principal sobre blanco */
-    --borde-gris: #dee2e6;     /* Gris suave para líneas divisorias */
+    --envia-magenta: #9b005d; /* Color principal de la cabecera */
+    --envia-white: #ffffff;
 }
 
-/* --- Estilos de Base --- */
-body {
-    background-color: var(--blanco-fondo) !important;
-    color: var(--texto-oscuro);
-    padding-top: 70px; /* Espacio para que el navbar fijo no tape el contenido */
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+/* Estilos de la Barra de Navegación */
+.navbar-envia {
+    background-color: var(--envia-magenta) !important;
+    padding: 0.6rem 2rem;
+    min-height: 64px;
 }
 
-/* --- Navbar Guinda --- */
-.custom-navbar {
-    background-color: var(--guinda-bajo) !important;
-    border-bottom: 1px solid var(--guinda-hover);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Logo y Tipografía */
+.navbar-brand-custom {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--envia-white) !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.5px;
 }
 
-.navbar-brand, .nav-link {
-    color: #ffffff !important;
+/* El círculo del logo basado en la imagen */
+.logo-circle-wrapper {
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--envia-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.nav-link:hover {
-    color: rgba(255, 255, 255, 0.8) !important;
+/* Iconos de la derecha (Buscar, Usuario, Carrito) */
+.nav-actions-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-/* --- Badge de Usuario --- */
-.user-badge {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 4px 12px !important;
+.nav-icon-link {
+    color: var(--envia-white) !important;
+    font-size: 1.35rem;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-icon-link:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+/* Ajuste para que el contenedor de Jinja no quede pegado al nav */
+.main-layout-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+
+/* --- Estilos del Catálogo (Index) --- */
+
+.catalog-header {
+    margin-bottom: 2rem;
+}
+
+.catalog-title {
+    font-weight: 700;
+    color: #333;
+}
+
+.catalog-subtitle {
+    color: #6c757d;
+}
+
+/* Tarjetas de Flores */
+.flower-card {
+    border: none !important;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flower-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.flower-img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.flower-name {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.flower-description {
     font-size: 0.85rem;
+    color: #6c757d;
 }
 
-/* --- Botones --- */
-
-/* Sign up (Blanco con texto guinda) */
-.btn-light {
-    background-color: #ffffff !important;
-    color: var(--guinda-bajo) !important;
-    border: 1px solid #ffffff !important;
-    transition: all 0.3s ease;
+.flower-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
 }
 
-.btn-light:hover {
-    background-color: #f8f9fa !important;
-    transform: translateY(-1px);
+.flower-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--envia-magenta); /* Usa la variable definida antes */
 }
 
-/* Log in (Contorno blanco) */
-.btn-outline-light {
-    border-color: rgba(255, 255, 255, 0.5) !important;
+.btn-add {
+    color: var(--envia-magenta);
+    border: 1px solid var(--envia-magenta);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.9rem;
+    background-color: transparent;
 }
 
-.btn-outline-light:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    border-color: #ffffff !important;
-}
-
-/* Logo circular */
-.rounded-circle {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Main Container (Ajuste para contenido sobre blanco) */
-main {
-    padding: 2rem;
-    min-height: 80vh;
+.btn-add:hover {
+    background-color: var(--envia-magenta);
+    color: white;
 }

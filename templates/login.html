@@ -1,47 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}Iniciar Sesión{% endblock %}
 {% block content %}
-<div class="login-body">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5 col-lg-4">
-                <div class="card login-card mt-5">
-                    <div class="card-body p-5">
-                        <div class="login-icon-circle shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-unlock-fill" viewBox="0 0 16 16">
-                                <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/>
-                            </svg>
-                        </div>
-
-                        <h2 class="text-center fw-bold mb-2" style="color: #db6868;">¡Hola de nuevo!</h2>
-                        <p class="text-center text-muted mb-4">Ingresa para organizar tu día</p>
-
-                        <form action="/login" method="POST">
-                            <div class="form-floating mb-3">
-                                <input type="email" name="email" class="form-control border-0 bg-light" id="floatingInput" placeholder="name@example.com" required>
-                                <label for="floatingInput" class="text-muted">Correo electrónico</label>
-                            </div>
-
-                            <div class="form-floating mb-4">
-                                <input type="password" name="password" class="form-control border-0 bg-light" id="floatingPassword" placeholder="Password" required>
-                                <label for="floatingPassword" class="text-muted">Contraseña</label>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-login-custom shadow-sm">
-                                    Entrar ahora
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <span class="text-muted small">¿Eres nueva por aquí?</span><br>
-                            <a href="{{ url_for('registro') }}" class="fw-bold text-decoration-none" style="color: #f06292;">
-                                Crea una cuenta gratis
-                            </a>
-                        </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-secondary p-4">
+                <h2 class="text-center mb-4">Iniciar Sesión</h2>
+                
+                <form action="/login" method="POST">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Correo electrónico</label>
+                        <input type="email" name="email" class="form-control bg-black text-white border-secondary" placeholder="correo@gmail.com" required>
                     </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" name="password" class="form-control bg-black text-white border-secondary" placeholder="ingresa tu contraseña" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-light w-100 fw-bold">Entrar</button>
+                    
+                </form>
+
+                <div class="text-center mt-3">
+                    <small class="text-secondary">¿No tienes cuenta? ve y <a href="/register" class="text-white">Regístrate</a></small>
                 </div>
             </div>
         </div>

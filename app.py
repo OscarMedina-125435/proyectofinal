@@ -1,38 +1,38 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from database import Plantas
-import os
+from flask import Flask, render_template, request, redirect, url_for
+from plantas import Plantas 
 
 app = Flask(__name__)
+# La secret_key es necesaria para manejar sesiones o mensajes flash en el futuro
+app.secret_key = "clave_secreta_provisional"
 
-app.secret_key = 'mi_clave_secreta_muy_segura'
-
-
-usuarios_db = {}
-
+# Inicializamos la conexión a Atlas al arrancar la app
+# Esto ejecutará el __init__ de tu clase Plantas
+db_mongo = Plantas()
 
 @app.route('/')
 def index():
+    # Asegúrate de tener un archivo index.html en la carpeta /templates
     return render_template('index.html')
 
-@app.route('/registro', methods=['GET', 'POST'])
-def registro():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     if request.method == 'POST':
-        usuario = request.form.get('usuario')
+        # Obtenemos los datos del formulario registro.html
+        nombre = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
-
-        if email in usuarios_db:
-            flash('Este correo ya está registrado.', 'warning')
-            return redirect(url_for('registro'))
-
-        usuarios_db[email] = {
-            'nombre': usuario,
-            'password': generate_password_hash(password)
-        }
         
-        flash('Registro exitoso. Ahora puedes iniciar sesión.', 'success')
-        return redirect(url_for('login'))
-
+        # Llamamos al método que conecta con MongoDB Atlas
+        user_id = db_mongo.crear_usuario(nombre, email, password)
+        
+        if user_id:
+            # Si se creó con éxito, mandamos al usuario al login
+            return redirect(url_for('login'))
+        else:
+            # Si el email ya existe en Atlas, mostramos este error
+            return "El email ya está registrado en la base de datos."
+            
+    # GET: Muestra el formulario de registro
     return render_template('registro.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -40,24 +40,21 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-
-        user = usuarios_db.get(email)
-
-        if user and check_password_hash(user['password'], password):
-            session['usuario_nombre'] = user['nombre']
-            flash(f'¡Bienvenido de nuevo, {user["nombre"]}!', 'success')
+        
+        # Buscamos el usuario en Atlas
+        usuario = db_mongo.verificar_login(email, password)
+        
+        if usuario:
+            # Si las credenciales son correctas, entramos al index
+            print(f"✅ Sesión iniciada para: {usuario['nombre']}")
             return redirect(url_for('index'))
         else:
-            flash('Credenciales incorrectas. Intenta de nuevo.', 'danger')
-            return redirect(url_for('login'))
+            # Si no coinciden los datos en la nube
+            return "Credenciales incorrectas. Intenta de nuevo."
 
+    # GET: Muestra el formulario de inicio de sesión
     return render_template('login.html')
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash('Has cerrado sesión correctamente.', 'info')
-    return redirect(url_for('index'))
-
 if __name__ == '__main__':
+    # debug=True permite que la app se reinicie sola cuando hagas cambios
     app.run(debug=True)

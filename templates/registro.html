@@ -1,50 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %}Crear Cuenta{% endblock %}
+{% block title %}Crear Cuenta - Rutina Diaria{% endblock %}
 
 {% block content %}
-
-<div class="registro-container">
-    <div class="col-md-5 mx-auto">
-        <div class="card card-registro">
-            <div class="registro-header text-center"> <img src="{{ url_for('static', filename='img/m.jpeg') }}"
-                    class="rounded-circle mb-2 border border-2 border-white object-fit-cover" alt="Perfil" width="70"
-                    height="70">
-            </div>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-4 shadow-lg border-secondary bg-dark text-white rounded-4" style="width: 100%; max-width: 450px;">
+        
+        <div class="text-center mb-4">
+            <i class="bi bi-person-plus fs-1 text-light"></i>
+            <h2 class="h4 mt-2 fw-bold">Crea tu cuenta</h2>
+            <p class="text-secondary small">Registrate para gestionar tus tareas diarias</p>
         </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row justify-content-center">
-        <h3 class="mb-0">Regístrate</h3>
-        <small>Únete a tu agenda personal</small>
-    </div>
 
-    <div class="card-body p-4">
-        <form action="/registro" method="POST">
+        <form action="/register" method="POST">
             <div class="mb-3">
-                <label class="form-label fw-bold">Nombre de Usuario</label>
-                <input type="text" name="usuario" class="form-control form-control-custom" placeholder="usuario"
-                    required>
+                <label for="username" class="form-label small text-secondary">Nombre de usuario</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-black border-secondary text-secondary">
+                        <i class="bi bi-person"></i>
+                    </span>
+                    <input type="text" name="username" id="username" class="form-control bg-black text-white border-secondary" placeholder="Nombre de Usuario" required>
+                </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label fw-bold">Tu mejor Email</label>
-                <input type="email" name="email" class="form-control form-control-custom"
-                    placeholder="ejemplo@correo.com" required>
+                <label for="email" class="form-label small text-secondary">Correo electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-black border-secondary text-secondary">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email" name="email" id="email" class="form-control bg-black text-white border-secondary" placeholder="correo@gmail.com" required>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label fw-bold">Contraseña</label>
-                <input type="password" name="password" class="form-control form-control-custom" required>
+            <div class="mb-4">
+                <label for="password" class="form-label small text-secondary">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-black border-secondary text-secondary">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" name="password" id="password" class="form-control bg-black text-white border-secondary" placeholder="crea tu contraseña" required>
+                </div>
             </div>
 
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-registro">
-                    ¡Comenzar ahora!
-                </button>
+            <button type="submit" class="btn btn-light w-100 fw-bold py-2 mb-3">
+                Registrarse
+            </button>
+            
+            
+            <div class="text-center">
+                <span class="text-secondary small">¿Ya tienes cuenta? </span>
+                <a href="/login" class="text-white small text-decoration-none fw-bold">Inicia sesión</a>
             </div>
         </form>
-<p class="small text-muted">¿Ya tienes cuenta? 
-    <a href="{{ url_for('login') }}" class="text-primary">Inicia sesión</a>
-</p>
+    </div>
+</div>
+{% endblock %}

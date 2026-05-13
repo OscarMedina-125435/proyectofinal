@@ -2,32 +2,59 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, ConnectionFailure
 from bson.objectid import ObjectId
 from datetime import datetime
-import os
+from typing import Optional, Dict
 
 class Plantas:
-    def __init__(self):
-        # 1. Tu URI con las credenciales que verificamos
-        uri = "mongodb+srv://luzzz06:UxVkjeZjqCzeNTFE@luzz.jzuseoq.mongodb.net/?appName=luzz"
+    def __init__(self, uri: str = "mongodb+srv://luzzz06:UxVkjeZjqCzeNTFE@luzz.jzuseoq.mongodb.net/?retryWrites=true&w=majority&appName=luzz"):
+        """Inicializar conexión a MongoDB Atlas para gestión de usuarios"""
         try:
-            # 2. Conexión al cliente
-            self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000)
-            
-            # 3. Acceso a la base de datos y colecciones
-            self.db = self.cliente['gestor_tareas']
-            self.usuarios = self.db['usuarios']
-            self.tareas = self.db['tareas']
-            
-            # 4. El "Ping" para confirmar que entramos
+            # Conexión directa ignorando errores de certificados SSL en Windows
+            self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
             self.cliente.admin.command('ping')
             
-            # 5. Crear índice único para el email
+            self.db = self.cliente['plantas']
+            self.usuarios = self.db['usuarios']
+            
+            # Crear índice único para que no se repitan correos
             self.usuarios.create_index("email", unique=True)
-            
-            print("✅ Conexión a la Nube Exitosa")
-            
+            print("✅ Conexión a Atlas Exitosa - Gestión de Usuarios")
+        except ConnectionFailure:
+            print("❌ Error: No se pudo conectar a MongoDB Atlas")
+            raise
+    
+    def crear_usuario(self, nombre: str, email: str, password: str) -> Optional[str]:
+        """Insertar un nuevo usuario en la base de datos"""
+        try:
+            resultado = self.usuarios.insert_one({
+                "nombre": nombre,
+                "email": email,
+                "password": password,
+                "fecha_registro": datetime.now(),
+                "activo": True
+            })
+            return str(resultado.inserted_id)
+        except DuplicateKeyError:
+            print(f"❌ Error: El email {email} ya existe")
+            return None
+    
+    def obtener_usuario(self, usuario_id: str) -> Optional[Dict]:
+        """Buscar un usuario por su ID"""
+        try:
+            usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
+            if usuario:
+                usuario['_id'] = str(usuario['_id'])
+            return usuario
         except Exception as e:
-            print(f"❌ Error de conexión: {e}")
+            print(f"Error al obtener usuario: {e}")
+            return None
 
-# --- PRUEBA DE CONEXIÓN ---
+    def verificar_login(self, email, password):
+        """Validar credenciales para el inicio de sesión"""
+        usuario = self.usuarios.find_one({"email": email, "password": password})
+        if usuario:
+            usuario['_id'] = str(usuario['_id'])
+            return usuario
+        return None
+
 if __name__ == "__main__":
-    gestor = GestorTareas()
+    add_plants = Plantas()

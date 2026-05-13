@@ -1,79 +1,75 @@
 {% extends "base.html" %}
 
+{% block title %}Flores y Regalos | EnviaFlores{% endblock %}
+
 {% block content %}
-<header class="py-5 text-center bg-light">
-    <div class="container">
-        <h1 class="display-4 fw-bold">Invernadero Virtual</h1>
-        <p class="lead">Centralizamos la información para que tus plantas nunca vuelvan a morir.</p>
-        <div class="mt-4">
-            <a href="#explorar" class="btn btn-guinda btn-lg">Explorar Plantas</a>
-            {% if not session.get('usuario_nombre') %}
-    <a href="{{ url_for('registro') }}" class="btn btn-dorado btn-lg">Crear Cuenta</a>
-{% endif %}
-        </div>
-    </div>
-</header>
-
-<section class="container my-5 text-center">
-    <h3>Busca tu planta</h3>
-    <form class="d-flex justify-content-center mt-3">
-        <input type="text" class="form-control w-50 me-2" placeholder="Ej: Monstera, Cactus, Helecho...">
-        <button type="submit" class="btn btn-guinda">Buscar</button>
-    </form>
+<section class="catalog-header">
+    <h2 class="catalog-title">Arreglos Florales Destacados</h2>
+    <p class="catalog-subtitle">Envía alegría hoy mismo con nuestros mejores diseños.</p>
 </section>
 
-<section id="explorar" class="container my-5">
-    <h2 class="mb-4">Plantas Populares</h2>
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Planta">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">Monstera Deliciosa</h5>
-                    <p class="card-text text-muted">Ideal para interiores con luz indirecta.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="#" class="btn btn-outline-secondary btn-sm">Ver Guía</a>
-                        <button class="btn btn-outline-danger btn-sm">❤️ Favorito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Planta">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">Suculenta Echeveria</h5>
-                    <p class="card-text text-muted">Requiere poca agua y mucha iluminación directa.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="#" class="btn btn-outline-secondary btn-sm">Ver Guía</a>
-                        <button class="btn btn-outline-danger btn-sm">❤️ Favorito</button>
-                    </div>
+<!-- Cuadrícula de Productos -->
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    
+    <!-- Card 1 -->
+    <div class="col">
+        <div class="card flower-card h-100">
+            <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=500&q=80" class="card-img-top flower-img" alt="Ramo de Rosas">
+            <div class="card-body">
+                <h5 class="flower-name">Ramo de 24 Rosas Rojas</h5>
+                <p class="flower-description">Elegante arreglo con follaje premium.</p>
+                <div class="flower-footer">
+                    <span class="flower-price">$590.00</span>
+                    <button class="btn btn-add">Agregar</button>
                 </div>
             </div>
         </div>
     </div>
-</section>
 
-<section class="bg-white py-5">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4">
-                <i class="bi bi-book mb-3" style="font-size: 2rem; color: #800020;"></i>
-                <h4>Información Real</h4>
-                <p>Datos botánicos precisos y fáciles de entender.</p>
-            </div>
-            <div class="col-md-4">
-                <i class="bi bi-star mb-3" style="font-size: 2rem; color: #D4AF37;"></i>
-                <h4>Favoritos</h4>
-                <p>Guarda las plantas que te gustan para consultarlas luego.</p>
-            </div>
-            <div class="col-md-4">
-                <i class="bi bi-heart mb-3" style="font-size: 2rem; color: #800020;"></i>
-                <h4>Cuidado Fácil</h4>
-                <p>Guías claras sobre riego y luz para evitar que mueran.</p>
+    <!-- Card 2 -->
+    <div class="col">
+        <div class="card flower-card h-100">
+            <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=500&q=80" class="card-img-top flower-img" alt="Tulipanes">
+            <div class="card-body">
+                <h5 class="flower-name">Caja de 10 Tulipanes</h5>
+                <p class="flower-description">Tulipanes holandeses en caja de lujo.</p>
+                <div class="flower-footer">
+                    <span class="flower-price">$750.00</span>
+                    <button class="btn btn-add">Agregar</button>
+                </div>
             </div>
         </div>
     </div>
-</section>
+
+    <!-- Card 3 -->
+    <div class="col">
+        <div class="card flower-card h-100">
+            <img src="https://images.unsplash.com/photo-1561181286-d3fea73e413f?auto=format&fit=crop&w=500&q=80" class="card-img-top flower-img" alt="Girasoles">
+            <div class="card-body">
+                <h5 class="flower-name">Girasoles Brillantes</h5>
+                <p class="flower-description">Perfectos para iluminar el día de alguien.</p>
+                <div class="flower-footer">
+                    <span class="flower-price">$420.00</span>
+                    <button class="btn btn-add">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="col">
+        <div class="card flower-card h-100">
+            <img src="https://images.unsplash.com/photo-1591886960571-74d43a9d4166?auto=format&fit=crop&w=500&q=80" class="card-img-top flower-img" alt="Orquídeas">
+            <div class="card-body">
+                <h5 class="flower-name">Orquídea Blanca Doble</h5>
+                <p class="flower-description">Planta de larga vida en maceta de cerámica.</p>
+                <div class="flower-footer">
+                    <span class="flower-price">$890.00</span>
+                    <button class="btn btn-add">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
