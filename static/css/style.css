@@ -1,0 +1,76 @@
+/* --- Paleta de Colores --- */
+:root {
+    --guinda-bajo: #6a1b32;    /* Guinda institucional */
+    --guinda-hover: #4d1022;   /* Guinda más oscuro para estados hover */
+    --blanco-fondo: #ffffff;   /* Fondo de la página */
+    --texto-oscuro: #212529;   /* Texto principal sobre blanco */
+    --borde-gris: #dee2e6;     /* Gris suave para líneas divisorias */
+}
+
+/* --- Estilos de Base --- */
+body {
+    background-color: var(--blanco-fondo) !important;
+    color: var(--texto-oscuro);
+    padding-top: 70px; /* Espacio para que el navbar fijo no tape el contenido */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* --- Navbar Guinda --- */
+.custom-navbar {
+    background-color: var(--guinda-bajo) !important;
+    border-bottom: 1px solid var(--guinda-hover);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* --- Badge de Usuario --- */
+.user-badge {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 4px 12px !important;
+    font-size: 0.85rem;
+}
+
+/* --- Botones --- */
+
+/* Sign up (Blanco con texto guinda) */
+.btn-light {
+    background-color: #ffffff !important;
+    color: var(--guinda-bajo) !important;
+    border: 1px solid #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.btn-light:hover {
+    background-color: #f8f9fa !important;
+    transform: translateY(-1px);
+}
+
+/* Log in (Contorno blanco) */
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: #ffffff !important;
+}
+
+/* Logo circular */
+.rounded-circle {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Main Container (Ajuste para contenido sobre blanco) */
+main {
+    padding: 2rem;
+    min-height: 80vh;
+}
