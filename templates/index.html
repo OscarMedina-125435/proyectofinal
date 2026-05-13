@@ -1,74 +1,79 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="nav-scrollable">
-    {% for d in dias %}
-    <a href="/?fecha={{ d.id }}" class="dia-item text-decoration-none">
-        <div>{{ d.nombre }}</div>
-        <div class="{{ 'circulo-sel' if seleccionado == d.id else 'text-white pt-2' }}">
-            {{ d.numero }}
+<header class="py-5 text-center bg-light">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Invernadero Virtual</h1>
+        <p class="lead">Centralizamos la información para que tus plantas nunca vuelvan a morir.</p>
+        <div class="mt-4">
+            <a href="#explorar" class="btn btn-guinda btn-lg">Explorar Plantas</a>
+            {% if not session.get('usuario_nombre') %}
+    <a href="{{ url_for('registro') }}" class="btn btn-dorado btn-lg">Crear Cuenta</a>
+{% endif %}
         </div>
-    </a>
-    {% endfor %}
-</div>
-
-<div class="container mt-4">
-    <div class="lista-tareas">
-        {% for t in tareas %}
-            <div class="tarea-card shadow-sm mb-3 p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="check{{ t._id }}" 
-                                {% if t.estado == 'terminado' %} checked {% endif %} disabled>
-                        <label class="form-check-label text-white" for="check{{ t._id }}">
-                            {{ t.titulo }}
-                        </label>
-                    </div>
-
-                    <div class="d-flex align-items-center gap-2">
-                        <form action="/update_status/{{ t._id }}/{{ seleccionado }}" method="POST" class="d-flex gap-1">
-                            <select name="nuevo_estado" class="form-select form-select-sm bg-dark text-white border-secondary">
-                                <option value="pendiente" {% if t.estado == 'pendiente' %} selected {% endif %}>⏳</option>
-                                <option value="en proceso" {% if t.estado == 'en proceso' %} selected {% endif %}>🚧</option>
-                                <option value="terminado" {% if t.estado == 'terminado' %} selected {% endif %}>✅</option>
-                            </select>
-                            <button type="submit" class="btn btn-sm btn-secondary">Ok</button>
-                        </form>
-
-                        <a href="/delete/{{ t._id }}/{{ seleccionado }}" class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                    {% if t.estado == 'pendiente' %}
-                        <span class="badge rounded-pill bg-secondary">Pendiente</span>
-                    {% elif t.estado == 'en proceso' %}
-                        <span class="badge rounded-pill bg-primary">En proceso</span>
-                    {% elif t.estado == 'terminado' %}
-                        <span class="badge rounded-pill bg-success">Terminado</span>
-                    {% endif %}
-                </div>
-            </div>
-        {% else %}
-            <div class="text-center py-5">
-                <p class="text-secondary mb-0">Nada planeado para hoy.</p>
-                <small class="text-muted">Usa el formulario de abajo para añadir una tarea.</small>
-            </div>
-        {% endfor %}
     </div>
+</header>
 
-    <form action="/add" method="POST" class="mt-4 pb-5">
-        <input type="hidden" name="fecha" value="{{ seleccionado }}">
-        <div class="input-group">
-            <input type="text" name="tarea" 
-            class="form-control bg-dark text-white border-secondary" 
-            placeholder="¿Qué tienes planeado?" 
-            required>
-            <button class="btn btn-light fw-bold" type="submit">+</button>
-        </div>
+<section class="container my-5 text-center">
+    <h3>Busca tu planta</h3>
+    <form class="d-flex justify-content-center mt-3">
+        <input type="text" class="form-control w-50 me-2" placeholder="Ej: Monstera, Cactus, Helecho...">
+        <button type="submit" class="btn btn-guinda">Buscar</button>
     </form>
-</div>
+</section>
+
+<section id="explorar" class="container my-5">
+    <h2 class="mb-4">Plantas Populares</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Planta">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Monstera Deliciosa</h5>
+                    <p class="card-text text-muted">Ideal para interiores con luz indirecta.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="#" class="btn btn-outline-secondary btn-sm">Ver Guía</a>
+                        <button class="btn btn-outline-danger btn-sm">❤️ Favorito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Planta">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Suculenta Echeveria</h5>
+                    <p class="card-text text-muted">Requiere poca agua y mucha iluminación directa.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="#" class="btn btn-outline-secondary btn-sm">Ver Guía</a>
+                        <button class="btn btn-outline-danger btn-sm">❤️ Favorito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <i class="bi bi-book mb-3" style="font-size: 2rem; color: #800020;"></i>
+                <h4>Información Real</h4>
+                <p>Datos botánicos precisos y fáciles de entender.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-star mb-3" style="font-size: 2rem; color: #D4AF37;"></i>
+                <h4>Favoritos</h4>
+                <p>Guarda las plantas que te gustan para consultarlas luego.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-heart mb-3" style="font-size: 2rem; color: #800020;"></i>
+                <h4>Cuidado Fácil</h4>
+                <p>Guías claras sobre riego y luz para evitar que mueran.</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
