@@ -4,11 +4,10 @@ from bson.objectid import ObjectId
 from datetime import datetime
 import os
 
-class GestorTareas:
+class Plantas:
     def __init__(self):
         # 1. Tu URI con las credenciales que verificamos
         uri = "mongodb+srv://luzzz06:UxVkjeZjqCzeNTFE@luzz.jzuseoq.mongodb.net/?appName=luzz"
-        
         try:
             # 2. Conexión al cliente
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000)
