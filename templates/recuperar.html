@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <!-- Esto añade el CSS específico solo a esta página -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/recuperar.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container recuperar-container">
+    <div class="card card-recuperar">
+        <div class="card-body">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">¿Tienes problemas para entrar?</h2>
+                <p class="text-muted">Introduce tu correo electrónico y te enviaremos un enlace para recuperar tu cuenta.</p>
+            </div>
+
+            <!-- Mensajes Flash de Flask/Jinja2 -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} mb-3" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('recuperar_password') }}" method="POST">
+                <div class="mb-3">
+                    <input type="email" 
+                           name="email" 
+                           class="form-control" 
+                           placeholder="Correo electrónico" 
+                           required>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-enviar">
+                        Enviar enlace de recuperación
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <hr>
+                <a href="{{ url_for('login') }}" class="text-decoration-none fw-bold" style="color: #0d6efd;">
+                    Volver al inicio de sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
