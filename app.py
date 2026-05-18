@@ -10,30 +10,28 @@ db_mongo = Plantas()
 
 @app.route('/')
 def index():
-    usuarioo = session.get("usuarioo")
-    if not usuarioo:
+    usuario = session.get("usuarioo")
+    if not usuario:
         return redirect(url_for('login'))
-    return render_template('index.html', usuario=usuarioo)
+    return render_template('index.html', usuario=usuario)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
     if request.method == 'POST':
         nombre = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
     
-
-
         password_segura = encriptar_password(password)
         resultado_registro = db_mongo.crear_usuario(nombre, email, password_segura)
         
         if resultado_registro:
-           
-            session['usuarioo'] = nombre
+            
             return redirect(url_for('login'))
         else:
-            return "El email ya está registrado en la base de datos."
+            return redirect(url_for("registro"))
+    return render_template('registro.html')
 
 
 
@@ -43,17 +41,24 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         
-        # Buscamos y verificamos las credenciales en Atlas
+        # Buscamos y verificamos al usuario en MongoDB Atlas
         usuario = db_mongo.verificar_login(email, password)
         
         if usuario:
-            # Guardamos el identificador del usuario en la sesión de Flask
-            session['usuarioo'] = usuario['_id']
-            print(f"✅ Sesión iniciada para: {usuario['nombre']}")
+            
+            session['usuario'] = str(usuario['_id'])
+            
+            
+            session['nombre_usuario'] = usuario.get('nombre', 'Usuario') 
+            
+            print(f"✅ Sesión iniciada para: {usuario.get('nombre')}")
             return redirect(url_for('index'))
+        else:
+            
+            flash('Correo o contraseña incorrectos. Inténtalo de nuevo.', 'error')
+            return redirect(url_for('login')) 
             
     return render_template('login.html')
-
 
 
 @app.route('/recuperar', methods=['GET', 'POST'])

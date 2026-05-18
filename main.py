@@ -43,6 +43,9 @@ class GestorTareas:
             print(f"❌ Error: El email {email} ya está registrado")
             return None
     
+    
+    
+    
     def obtener_usuario(self, usuario_id: str) -> Optional[Dict]:
         """Obtener usuario por ID"""
         try:

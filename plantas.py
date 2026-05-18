@@ -38,7 +38,7 @@ class Plantas:
             return None
     
     def obtener_usuario(self, usuario_id: str) -> Optional[Dict]:
-        """Buscar un usuario por su ID"""
+        """Obtiene un usuario por su ID convirtiéndolo a string."""
         try:
             usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
             if usuario:
@@ -48,17 +48,8 @@ class Plantas:
             print(f"Error al obtener usuario: {e}")
             return None
 
-    def verificar_login(self, email, password):
-        """Validar credenciales para el inicio de sesión"""
-        usuario = self.usuarios.find_one({"email": email, "password": password})
-        if usuario:
-            usuario['_id'] = str(usuario['_id'])
-            return usuario
-        return None
-
-    # --- AGREGAMOS ESTA FUNCIÓN PARA TU RUTA DE RECUPERAR ---
-    def buscar_usuario_por_correo(self, email):
-        """Busca si un correo ya existe en la colección de usuarios"""
+    def buscar_usuario_por_correo(self, email: str) -> Optional[Dict]:
+        """Busca si un correo existe en la colección de usuarios."""
         try:
             usuario = self.usuarios.find_one({"email": email})
             if usuario:
@@ -66,21 +57,19 @@ class Plantas:
                 return usuario
             return None
         except Exception as e:
-            print(f"❌ Error al buscar usuario por correo: {e}")
+            print(f"Error al buscar usuario por correo: {e}")
             return None
 
-    def actualizar_password(self, email, nueva_password):
-        """Busca al usuario por su email y actualiza su contraseña en MongoDB Atlas."""
+    def actualizar_password(self, email: str, password_encriptada: str) -> bool:
+        """Actualiza la contraseña (ya encriptada) de un usuario."""
         try:
-            # CAMBIO: Usamos 'self.usuarios' igual que en tus otras funciones
             resultado = self.usuarios.update_one(
                 {"email": email},
-                {"$set": {"password": nueva_password}}
+                {"$set": {"password": password_encriptada}}
             )
-            # Retorna True si encontró al usuario y modificó el documento
             return resultado.modified_count > 0
         except Exception as e:
-            print(f"❌ Error al actualizar la contraseña en MongoDB: {e}")
+            print(f"Error al actualizar la contraseña: {e}")
             return False
         
 
