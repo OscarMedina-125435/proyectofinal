@@ -4,6 +4,8 @@ from bson.objectid import ObjectId
 from datetime import datetime
 from typing import Optional, Dict
 
+# 💡 Eliminamos 'from seguridad import verificar_password' porque ya no usamos ese archivo
+
 class Plantas:
     def __init__(self, uri: str = "mongodb+srv://luzzz06:UxVkjeZjqCzeNTFE@luzz.jzuseoq.mongodb.net/?retryWrites=true&w=majority&appName=luzz"):
         """Inicializar conexión a MongoDB Atlas para gestión de usuarios"""
@@ -28,7 +30,7 @@ class Plantas:
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "email": email,
-                "password": password, # RECUERDA: En app.py aquí ya le pasaremos la contraseña encriptada
+                "password": password, # Contraseña ya encriptada proveniente de app.py
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
@@ -72,6 +74,10 @@ class Plantas:
             print(f"Error al actualizar la contraseña: {e}")
             return False
         
+    def obtener_plantas(self):
+        return self.db.plantas.find()
+
+
 
 if __name__ == "__main__":
     add_plants = Plantas()
