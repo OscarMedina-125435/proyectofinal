@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,session
 from plantas import Plantas 
 
 app = Flask(__name__)
@@ -8,20 +8,22 @@ db_mongo = Plantas()
 
 @app.route('/')
 def index():
-    
+    user = session.get("usuarioo")
+    if usuarioo:
+        return f"Bienvenido,"
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         nombre = request.form.get('username')
-        email = request.form.get('email')
         password = request.form.get('password')
+        email = request.form.get('email')
         
+
+        usuarioo= db_mongo.crear_usuario(nombre,password,email)
         
-        user_id = db_mongo.crear_usuario(nombre, email, password)
-        
-        if user_id:
+        if usuarioo:
             return redirect(url_for('login'))
         else:
             return "El email ya está registrado en la base de datos."
@@ -40,6 +42,7 @@ def login():
         
         if usuario:
             # Si las credenciales son correctas, entramos al index
+            session['usuarioo'] = usuario['_id']
             print(f"✅ Sesión iniciada para: {usuario['nombre']}")
             return redirect(url_for('index'))
         else:
@@ -49,6 +52,12 @@ def login():
     # GET: Muestra el formulario de inicio de sesión
     return render_template('login.html')
 
+
+@app.route("/logout")
+
+def logout():
+    session.pop('usuarioo', None)
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
-    # debug=True permite que la app se reinicie sola cuando hagas cambios
     app.run(debug=True)
