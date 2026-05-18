@@ -56,5 +56,21 @@ class Plantas:
             return usuario
         return None
 
+def actualizar_password(self, email, nueva_password):
+        """
+        Busca al usuario por su email y actualiza su contraseña en MongoDB Atlas.
+        """
+        try:
+            # Reemplaza 'usuarios' por el nombre exacto de tu colección si es diferente
+            resultado = self.db.usuarios.update_one(
+                {"email": email},
+                {"$set": {"password": nueva_password}}
+            )
+            # Retorna True si encontró al usuario y modificó el documento
+            return resultado.modified_count > 0
+        except Exception as e:
+            print(f"❌ Error al actualizar la contraseña en MongoDB: {e}")
+            return False
+
 if __name__ == "__main__":
     add_plants = Plantas()

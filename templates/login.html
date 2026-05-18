@@ -4,28 +4,36 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
-            <div class="card bg-ligth text-black border-secondary p-4">
+            <div class="card bg-light text-black border-secondary p-4">
                 <h2 class="text-center mb-4">Iniciar Sesión</h2>
                 
-                <form action="/login" method="POST">
+                <form action="{{ url_for('login') }}" method="POST">
                     
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" name="email" class="form-control bg-ligth text-white border-secondary" placeholder="correo@gmail.com" required>
+                        <input type="email" name="email" class="form-control bg-light text-black border-secondary" placeholder="correo@gmail.com" required>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label">Contraseña</label>
-                        <input type="password" name="password" class="form-control bg-ligth text-white border-secondary" placeholder="ingresa tu contraseña" required>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label mb-0">Contraseña</label>
+                        </div>
+                        <input type="password" name="password" class="form-control bg-light text-black border-secondary" placeholder="ingresa tu contraseña" required>
                     </div>
 
-                    <button type="submit" class="btn btn-black w-100 fw-bold">Entrar</button>
+                    <button type="submit" class="btn btn-dark w-100 fw-bold py-2 mb-3">Entrar</button>
                     
                 </form>
 
-                <div class="text-center mt-3">
-                    <small class="text-secondary">¿No tienes cuenta? ve y <a href="/register" class="text-black">Regístrate</a></small>
+                <hr class="text-secondary">
+
+                <div class="text-center mt-2">
+                    <small class="text-secondary">¿No tienes cuenta? ve y <a href="{{ url_for('register') }}" class="text-black fw-bold">Regístrate</a></small>
                 </div>
+                 <div class="text-center mt-2">
+                    <div class="mb-1">
+                          <a href="{{ url_for('recuperar_password') }}" class="text-secondary small text-decoration-none">¿Olvidaste tu contraseña?</a>
+                    </div>
             </div>
         </div>
     </div>

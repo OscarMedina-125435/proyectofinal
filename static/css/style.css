@@ -129,3 +129,37 @@
     background-color: var(--envia-magenta);
     color: white;
 }
+
+/* Estilos con colores puros para Recuperar Contraseña */
+.recuperar-container {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; /* Fondo blanco puro */
+}
+
+.card-recuperar {
+    max-width: 400px;
+    width: 100%;
+    border: 2px solid #6c757d; /* Borde gris sólido */
+    background-color: #f8f9fa; /* Fondo gris claro plano */
+    padding: 1.5rem;
+}
+
+.btn-enviar {
+    background-color: #800040; /* Color morado plano */
+    color: #ffffff;            /* Texto blanco */
+    font-weight: bold;
+    padding: 0.6rem;
+    border: none;
+}
+
+.btn-enviar:hover {
+    background-color: #59002c; /* Morado más oscuro plano para el hover */
+    color: #ffffff;
+}
+
+.text-link-back {
+    color: #800040; /* Enlace del mismo color de la marca */
+}
