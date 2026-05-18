@@ -6,7 +6,8 @@
         <div class="card-body">
             <div class="text-center mb-4">
                 <h2 class="fw-bold fs-3">¿Tienes problemas para entrar?</h2>
-                <p class="text-muted small">Introduce tu correo electrónico y te enviaremos un enlace para recuperar tu cuenta.</p>
+                <!-- CAMBIO: Ahora dice "un código" en vez de "un enlace" -->
+                <p class="text-muted small">Introduce tu correo electrónico y te enviaremos un código para recuperar tu cuenta.</p>
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -19,7 +20,8 @@
               {% endif %}
             {% endwith %}
 
-            <form action="{{ url_for('recuperar_password') }}" method="POST">
+            <!-- CAMBIO: Apunta a la ruta 'recuperar' -->
+            <form action="{{ url_for('recuperar') }}" method="POST">
                 <div class="mb-3">
                     <input type="email" 
                            name="email" 
@@ -29,8 +31,9 @@
                 </div>
 
                 <div class="d-grid">
+                    <!-- CAMBIO: Texto del botón -->
                     <button type="submit" class="btn btn-enviar">
-                        Enviar enlace de recuperación
+                        Enviar código de recuperación
                     </button>
                 </div>
             </form>

@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session,flash
 from plantas import Plantas 
+from seguridad import enviar_codigo_recuperacion, encriptar_password, verificar_password
+
 
 app = Flask(__name__)
 app.secret_key = "clave_secreta_provisional"
@@ -18,19 +20,21 @@ def index():
 def register():
     if request.method == 'POST':
         nombre = request.form.get('username')
-        password = request.form.get('password')
         email = request.form.get('email')
+        password = request.form.get('password')
+    
+
+
+        password_segura = encriptar_password(password)
+        resultado_registro = db_mongo.crear_usuario(nombre, email, password_segura)
         
-        # Guardamos el usuario directamente en MongoDB Atlas
-        usuarioo = db_mongo.crear_usuario(nombre, email, password)
-        
-        if usuarioo:
-            # Redirigimos al login para que inicie sesión formalmente
+        if resultado_registro:
+           
+            session['usuarioo'] = nombre
             return redirect(url_for('login'))
         else:
             return "El email ya está registrado en la base de datos."
-            
-    return render_template('registro.html')
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -49,6 +53,35 @@ def login():
             return redirect(url_for('index'))
             
     return render_template('login.html')
+
+
+
+@app.route('/recuperar', methods=['GET', 'POST'])
+def recuperar():
+    if request.method == 'POST':
+        correo = request.form.get('email')
+       
+        usuario_existe = db_mongo.buscar_usuario_por_correo(correo) 
+        
+        if usuario_existe:
+            
+            codigo = enviar_codigo_recuperacion(correo)
+            
+            if codigo:
+                session['correo_recuperacion'] = correo
+                session['codigo_verificacion'] = codigo
+                
+                flash("¡Código enviado! Revisa tu bandeja de entrada.", "success")
+                # Lo mandamos a la página donde meterá el código
+                return redirect(url_for('verificar_codigo')) 
+            else:
+                flash("Hubo un problema al enviar el correo. Inténtalo de nuevo.", "danger")
+        else:
+            flash("Ese correo no está registrado en el sistema.", "danger")
+            
+   
+    return render_template('recuperar.html')
+
 
 
 @app.route("/logout")

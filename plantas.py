@@ -28,7 +28,7 @@ class Plantas:
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "email": email,
-                "password": password,
+                "password": password, # RECUERDA: En app.py aquí ya le pasaremos la contraseña encriptada
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
@@ -56,13 +56,24 @@ class Plantas:
             return usuario
         return None
 
-def actualizar_password(self, email, nueva_password):
-        """
-        Busca al usuario por su email y actualiza su contraseña en MongoDB Atlas.
-        """
+    # --- AGREGAMOS ESTA FUNCIÓN PARA TU RUTA DE RECUPERAR ---
+    def buscar_usuario_por_correo(self, email):
+        """Busca si un correo ya existe en la colección de usuarios"""
         try:
-            # Reemplaza 'usuarios' por el nombre exacto de tu colección si es diferente
-            resultado = self.db.usuarios.update_one(
+            usuario = self.usuarios.find_one({"email": email})
+            if usuario:
+                usuario['_id'] = str(usuario['_id'])
+                return usuario
+            return None
+        except Exception as e:
+            print(f"❌ Error al buscar usuario por correo: {e}")
+            return None
+
+    def actualizar_password(self, email, nueva_password):
+        """Busca al usuario por su email y actualiza su contraseña en MongoDB Atlas."""
+        try:
+            # CAMBIO: Usamos 'self.usuarios' igual que en tus otras funciones
+            resultado = self.usuarios.update_one(
                 {"email": email},
                 {"$set": {"password": nueva_password}}
             )
@@ -71,6 +82,7 @@ def actualizar_password(self, email, nueva_password):
         except Exception as e:
             print(f"❌ Error al actualizar la contraseña en MongoDB: {e}")
             return False
+        
 
 if __name__ == "__main__":
     add_plants = Plantas()
