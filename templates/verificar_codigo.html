@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Verificar Código - Mi invernadero {% endblock %}
+
+{% block content %}
+<div class="container recuperar-container" style="margin-top: 50px;">
+    <div class="card card-recuperar mx-auto" style="max-width: 450px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold fs-3" style="color: #333;">Verifica tu identidad</h2>
+                <p class="text-muted small">Ingresa el código numérico de 6 dígitos que enviamos a tu bandeja de entrada.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} mb-3 small text-center" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('verificar_codigo') }}" method="POST">
+                <div class="mb-4">
+                    <input type="text" 
+                           name="codigo_input" 
+                           class="form-control text-center fs-4 fw-bold" 
+                           placeholder="000000" 
+                           maxlength="6" 
+                           required 
+                           style="letter-spacing: 4px;">
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-enviar" style="background-color: #800040; color: white; font-weight: bold;">
+                        Validar Código
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <hr class="text-secondary">
+                <a href="{{ url_for('recuperar') }}" class="text-decoration-none small" style="color: #800040; font-weight: bold;">
+                    Volver a solicitar código
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

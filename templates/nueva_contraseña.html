@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Contraseña - Invernadero Virtual{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-5">
+        <div class="card shadow-sm p-4 border-0">
+            <div class="card-body">
+                <h3 class="card-title text-center text-success mb-3">Restablecer una nueva Contraseña</h3>
+                <p class="text-muted text-center small mb-4">
+                    Escribe una nueva contraseña de acceso.🪴 
+                </p>
+
+                {% with mensajes = get_flashed_messages(with_categories=true) %}
+                  {% if mensajes %}
+                    {% for categoria, msg in mensajes %}
+                      <div class="alert alert-{{ categoria }} p-2 small text-center" role="alert">
+                        {{ msg }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('nueva_contraseña') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="nueva_contraseñaa" class="form-label small fw-bold">Nueva contraseña</label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="nueva_contraseñaa" 
+                               name="nueva_contraseña" 
+                               placeholder="Mínimo 6 caracteres" 
+                               required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100">Actualizar nueva Contraseña</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
