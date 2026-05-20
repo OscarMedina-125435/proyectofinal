@@ -13,9 +13,9 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = "holasoyluzzz06@gmail.com"
-app.config['MAIL_PASSWORD'] = 'Maria064717'
-app.config['MAIL_DEFAULT_SENDER'] = "holasoyluzzz06@gmail.com"
+app.config['MAIL_USERNAME'] = "ubiarcomarialuz@gmail.com"
+app.config['MAIL_PASSWORD'] = 'eedoefcvijoxxwoo'
+app.config['MAIL_DEFAULT_SENDER'] = "ubiarcomarialuz@gmail.com"
 
 # Inicializamos Mail pasándole la app
 mail = Mail(app)
@@ -143,14 +143,14 @@ def verificar_codigo():
         if codigo_usuario == token_real:
             flash("¡Código correcto! Ya puedes cambiar tu contraseña.", "success")
             # Aquí lo mandarías a la pantalla final para escribir su nueva contraseña
-            return redirect(url_for('nueva_password')) 
+            return redirect(url_for('nueva_contrasena')) 
         else:
             flash("El código es incorrecto, revísalo bien.", "danger")
             
     return render_template('verificar_codigo.html')
 
 @app.route('/nueva_contrasena', methods=['GET', 'POST'])
-def nueva_contraseña():
+def nueva_contrasena():
     # Si intentan entrar directo sin pasar por el correo, los mandamos fuera
     if 'mail_verificar' not in session:
         flash("No has validado tu código aún.", "danger")
@@ -177,7 +177,7 @@ def nueva_contraseña():
         else:
             flash("Hubo un problema, intenta cambiarla otra vez.", "danger")
 
-    return render_template('nueva_contraseña.html')
+    return render_template('nueva_contrasena.html')
 
 @app.route("/logout")
 def logout():
