@@ -3,68 +3,264 @@
 {% block title %}Flores y Regalos | EnviaFlores{% endblock %}
 
 {% block content %}
-<section class="catalog-header">
-    <h2 class="catalog-title">Arreglos Florales Destacados</h2>
-    <p class="catalog-subtitle">Envía alegría hoy mismo con nuestros mejores diseños.</p>
+
+<!-- Botón Flotante para ver Favoritos -->
+<div class="container my-3 text-end">
+    <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
+        ❤️ Ver Favoritos 
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            2
+        </span>
+    </button>
+</div>
+
+<section class="catalog-header text-center mb-5">
+    <h2 class="catalog-title fw-bold">Arreglos Florales Destacados</h2>
+    <p class="catalog-subtitle text-muted">Haz clic en cada tarjeta para ver sus cuidados y añadirlas a tus favoritos.</p>
 </section>
 
-<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+<!-- Contenedor de Tarjetas -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
+    <!-- 1. Rosas Rojas -->
     <div class="col">
-        <div class="card flower-card h-100">
-            <img src="{{ url_for('static', filename='img/rosas.jpg') }}" alt="Ramo de 24 Rosas Rojas" class="card-img-top flower-img">
-            <div class="card-body">
-                <h5 class="flower-name">Ramo de 24 Rosas Rojas</h5>
-                <p class="flower-description">Elegante arreglo con follaje premium.</p>
-                <div class="flower-footer">
-                    <span class="flower-price">$590.00</span>
-                    <button class="btn btn-add">Agregar</button>
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+            <!-- Zona cliqueable superior -->
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosRosas">
+                <!-- Ratio fuerza a que todas las imágenes tengan la misma proporción (4:3) -->
+                <div class="ratio ratio-4x3">
+                    <img src="{{ url_for('static', filename='img/rosas.jpg') }}" alt="Ramo de 24 Rosas Rojas" class="img-fluid rounded-top object-fit-cover">
                 </div>
+                <div class="card-body pb-0">
+                    <h5 class="fw-semibold text-dark fs-5 text-truncate">Ramo de 24 Rosas Rojas</h5>
+                    <p class="card-text text-muted small text-truncate">Elegante arreglo con foliage premium.</p>
+                </div>
+            </div>
+            
+            <!-- Contenido colapsable (Flex-grow absorbe el espacio restante al abrirse) -->
+            <div class="collapse" id="cuidadosRosas">
+                <div class="card-body bg-light border-top border-bottom py-3">
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> <span class="badge bg-warning text-dark">Media</span></p>
+                    <p class="mb-1 small"><strong>Frecuencia:</strong> Cada 2 o 3 días.</p>
+                    <p class="mb-0 small"><strong>Riego:</strong> Moderado. 500ml directo en la tierra.</p>
+                </div>
+            </div>
+
+            <!-- Botones de Acción (Empujados siempre al fondo por mt-auto) -->
+            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
+                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidadosRosas">
+                    ℹ️ Ver cuidados
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    ❤️ Favorito
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- 2. Tulipanes -->
     <div class="col">
-        <div class="card flower-card h-100">
-            <img src="{{ url_for('static', filename='img/tulipanes.jpg') }}" alt="Caja de 10 Tulipanes" class="card-img-top flower-img">
-            <div class="card-body">
-                <h5 class="flower-name">Caja de 10 Tulipanes</h5>
-                <p class="flower-description">Tulipanes holandeses en caja de lujo.</p>
-                <div class="flower-footer">
-                    <span class="flower-price">$750.00</span>
-                    <button class="btn btn-add">Agregar</button>
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosTulipanes">
+                <div class="ratio ratio-4x3">
+                    <img src="{{ url_for('static', filename='img/tulipanes.jpg') }}" alt="Caja de 10 Tulipanes" class="img-fluid rounded-top object-fit-cover">
                 </div>
+                <div class="card-body pb-0">
+                    <h5 class="fw-semibold text-dark fs-5 text-truncate">Caja de 10 Tulipanes</h5>
+                    <p class="card-text text-muted small text-truncate">Tulipanes holandeses en caja de lujo.</p>
+                </div>
+            </div>
+            
+            <div class="collapse" id="cuidadosTulipanes">
+                <div class="card-body bg-light border-top border-bottom py-3">
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> <span class="badge bg-danger">Alta</span></p>
+                    <p class="mb-1 small"><strong>Frecuencia:</strong> Cada 2 días.</p>
+                    <p class="mb-0 small"><strong>Riego:</strong> Leve. Agua fría con hielos, unos 200ml.</p>
+                </div>
+            </div>
+
+            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
+                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidadosTulipanes">
+                    ℹ️ Ver cuidados
+                </button>
+                <button class="btn btn-sm btn-danger">
+                    ❤️ En Favoritos
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- 3. Girasoles -->
     <div class="col">
-        <div class="card flower-card h-100">
-            <img src="{{ url_for('static', filename='img/girasoles.jpg') }}" alt="Girasoles Brillantes" class="card-img-top flower-img">
-            <div class="card-body">
-                <h5 class="flower-name">Girasoles Brillantes</h5>
-                <p class="flower-description">Perfectos para iluminar el día de alguien.</p>
-                <div class="flower-footer">
-                    <span class="flower-price">$420.00</span>
-                    <button class="btn btn-add">Agregar</button>
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosGirasoles">
+                <div class="ratio ratio-4x3">
+                    <img src="{{ url_for('static', filename='img/girasoles.jpg') }}" alt="Girasoles" class="img-fluid rounded-top object-fit-cover">
                 </div>
+                <div class="card-body pb-0">
+                    <h5 class="fw-semibold text-dark fs-5 text-truncate">Girasoles Brillantes</h5>
+                    <p class="card-text text-muted small text-truncate">Perfectos para iluminar el día de alguien.</p>
+                </div>
+            </div>
+            
+            <div class="collapse" id="cuidadosGirasoles">
+                <div class="card-body bg-light border-top border-bottom py-3">
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> <span class="badge bg-success">Baja</span></p>
+                    <p class="mb-1 small"><strong>Frecuencia:</strong> Cada 2 días.</p>
+                    <p class="mb-0 small"><strong>Riego:</strong> Abundante. Requieren riego profundo de 1 litro.</p>
+                </div>
+            </div>
+
+            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
+                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidadosGirasoles">
+                    ℹ️ Ver cuidados
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    ❤️ Favorito
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- 4. Orquídea Blanca -->
     <div class="col">
-        <div class="card flower-card h-100">
-            <img src="{{ url_for('static', filename='img/orquidea.jpg') }}" alt="Orquídea Blanca" class="card-img-top flower-img">
-            <div class="card-body">
-                <h5 class="flower-name">Orquídea Blanca Doble</h5>
-                <p class="flower-description">Planta de larga vida en maceta de cerámica.</p>
-                <div class="flower-footer">
-                    <span class="flower-price">$890.00</span>
-                    <button class="btn btn-add">Agregar</button>
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosOrquidea">
+                <div class="ratio ratio-4x3">
+                    <img src="{{ url_for('static', filename='img/orquidea.jpg') }}" alt="Orquídea" class="img-fluid rounded-top object-fit-cover">
                 </div>
+                <div class="card-body pb-0">
+                    <h5 class="fw-semibold text-dark fs-5 text-truncate">Orquídea Blanca Doble</h5>
+                    <p class="card-text text-muted small text-truncate">Planta de larga vida en maceta cerámica.</p>
+                </div>
+            </div>
+            
+            <div class="collapse" id="cuidadosOrquidea">
+                <div class="card-body bg-light border-top border-bottom py-3">
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> <span class="badge bg-danger">Alta</span></p>
+                    <p class="mb-1 small"><strong>Frecuencia:</strong> Cada 7 a 10 días.</p>
+                    <p class="mb-0 small"><strong>Riego:</strong> Inmersión. Sumergir maceta por 15 min.</p>
+                </div>
+            </div>
+
+            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
+                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidadosOrquidea">
+                    ℹ️ Ver cuidados
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    ❤️ Favorito
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Lirios de la Paz -->
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosLirios">
+                <div class="ratio ratio-4x3">
+                    <img src="{{ url_for('static', filename='img/lirios.jpg') }}" alt="Lirios" class="img-fluid rounded-top object-fit-cover">
+                </div>
+                <div class="card-body pb-0">
+                    <h5 class="fw-semibold text-dark fs-5 text-truncate">Lirios de la Paz</h5>
+                    <p class="card-text text-muted small text-truncate">Hermosas flores blancas purificadoras.</p>
+                </div>
+            </div>
+            
+            <div class="collapse" id="cuidadosLirios">
+                <div class="card-body bg-light border-top border-bottom py-3">
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> <span class="badge bg-success">Baja</span></p>
+                    <p class="mb-1 small"><strong>Frecuencia:</strong> 1 o 2 veces por semana.</p>
+                    <p class="mb-0 small"><strong>Riego:</strong> Moderado. 400ml por vez y pulverizar.</p>
+                </div>
+            </div>
+
+            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
+                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidadosLirios">
+                    ℹ️ Ver cuidados
+                </button>
+                <button class="btn btn-sm btn-danger">
+                    ❤️ En Favoritos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Suculentas -->
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosSuculentas">
+                <div class="ratio ratio-4x3">
+                    <img src="{{ url_for('static', filename='img/suculentas.jpg') }}" alt="Suculentas" class="img-fluid rounded-top object-fit-cover">
+                </div>
+                <div class="card-body pb-0">
+                    <h5 class="fw-semibold text-dark fs-5 text-truncate">Jardín de Suculentas</h5>
+                    <p class="card-text text-muted small text-truncate">Variedad desértica en base minimalista.</p>
+                </div>
+            </div>
+            
+            <div class="collapse" id="cuidadosSuculentas">
+                <div class="card-body bg-light border-top border-bottom py-3">
+                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> <span class="badge bg-success">Muy Baja</span></p>
+                    <p class="mb-1 small"><strong>Frecuencia:</strong> Cada 12 a 15 días.</p>
+                    <p class="mb-0 small"><strong>Riego:</strong> Escaso. 100ml a 150ml directo a la tierra.</p>
+                </div>
+            </div>
+
+            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
+                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidadosSuculentas">
+                    ℹ️ Ver cuidados
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    ❤️ Favorito
+                </button>
             </div>
         </div>
     </div>
 
 </div>
+
+<!-- ========================================== -->
+<!-- APARTADO DE FAVORITOS (PANEL LATERAL)      -->
+<!-- ========================================== -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="panelFavoritos" aria-labelledby="panelFavoritosLabel">
+    <div class="offcanvas-header bg-light">
+        <h5 class="offcanvas-title fw-bold" id="panelFavoritosLabel">❤️ Mis Flores Favoritas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <p class="text-muted small mb-4">Aquí se mostrarán las plantas que guardes para revisar sus cuidados rápido.</p>
+        
+        <div class="list-group list-group-flush">
+            <div class="list-group-item d-flex align-items-center justify-content-between py-3 px-0">
+                <div class="d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='img/tulipanes.jpg') }}" alt="" class="rounded me-3 object-fit-cover" style="width: 50px; height: 50px;">
+                    <div>
+                        <h6 class="mb-0 fw-semibold">Caja de 10 Tulipanes</h6>
+                        <small class="text-danger">Dificultad: Alta</small>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-link text-muted text-decoration-none">❌</button>
+            </div>
+
+            <div class="list-group-item d-flex align-items-center justify-content-between py-3 px-0">
+                <div class="d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='img/lirios.jpg') }}" alt="" class="rounded me-3 object-fit-cover" style="width: 50px; height: 50px;">
+                    <div>
+                        <h6 class="mb-0 fw-semibold">Lirios de la Paz</h6>
+                        <small class="text-success">Dificultad: Baja</small>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-link text-muted text-decoration-none">❌</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
