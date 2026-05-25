@@ -9,9 +9,9 @@ class Plantas:
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
             self.cliente.admin.command('ping')
             
-            self.db = self.cliente['plantas']
-            self.usuarios = self.db['usuarios']
-            self.coleccion_plantas = self.db['plantas'] # Referencia clara a la colección de plantas
+            self.db = self.cliente['plantas']  # Base de datos principal
+            self.usuarios = self.db['usuarios'] # Colección de personas
+            self.coleccion_plantas = self.db['plantas'] # Colección de las plantas físicas # Referencia clara a la colección de plantas
             
             self.usuarios.create_index("email", unique=True)
             print("✅ Conexión a Atlas Exitosa")
