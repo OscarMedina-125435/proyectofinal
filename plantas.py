@@ -13,7 +13,7 @@ class Plantas:
             self.db = self.cliente['plantas']
             self.usuarios = self.db['usuarios']
             
-            # Índice para correos únicos
+            
             self.usuarios.create_index("email", unique=True)
             print("✅ Conexión a Atlas Exitosa - Gestión de Usuarios")
         except ConnectionFailure:
@@ -44,7 +44,7 @@ class Plantas:
             print(f"Error al obtener usuario: {e}")
             return None
 
-    def buscar_usuario_por_correo(self, email):
+    def buscar_usuario(self, email):
         try:
             usuario = self.usuarios.find_one({"email": email})
             if usuario:
@@ -55,7 +55,7 @@ class Plantas:
             print(f"Error al buscar usuario por correo: {e}")
             return None
 
-    def actualizar_password(self, email, password_encriptada):
+    def actualizar_contrasena(self, email, password_encriptada):
         try:
             resultado = self.usuarios.update_one(
                 {"email": email},
