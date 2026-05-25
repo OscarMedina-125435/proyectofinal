@@ -21,10 +21,16 @@ class Plantas:
     
     def crear_usuario(self, nombre, email, password):
         try:
+            if email == "ubiarcomarialuz@gmail.com":
+                rol_asignado = "administrador"
+            else:
+                rol_asignado = "usuario"
+
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "email": email,
                 "password": password, 
+                "rol": rol_asignado,
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
@@ -32,7 +38,7 @@ class Plantas:
         except DuplicateKeyError:
             print(f"❌ El email {email} ya existe")
             return None
-    
+        
     def obtener_usuario(self, usuario_id):
         try:
             usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
