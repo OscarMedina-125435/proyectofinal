@@ -6,7 +6,6 @@ from datetime import datetime
 class Plantas:
     def __init__(self, uri: str = "mongodb+srv://luzzz06:UxVkjeZjqCzeNTFE@luzz.jzuseoq.mongodb.net/?retryWrites=true&w=majority&appName=luzz"):
         try:
-            # Conexión directa a MongoDB Atlas
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
             self.cliente.admin.command('ping')
             
