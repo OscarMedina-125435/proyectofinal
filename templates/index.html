@@ -4,26 +4,6 @@
 
 {% block content %}
 
-<section class="catalog-header text-center my-5">
-    <h2 class="catalog-title fw-bold">Arreglos Florales Destacados</h2>
-    <p class="catalog-subtitle text-muted">Haz clic en cualquier diseño para conocer su guía de cuidados.</p>
-</section>
-
-<!-- Contenedor de Tarjetas -->
-<div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4">
-
-    <!-- 1. Rosas Rojas -->
-    <div class="col">
-        <div class="card h-100 shadow-sm text-center position-relative">
-            <img src="{{ url_for('static', filename='img/rosas.jpg') }}" alt="Ramo de 24 Rosas Rojas" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-center">
-                <h5 class="fw-semibold text-dark">Ramo de 24 Rosas Rojas</h5>
-                <p class="card-text text-muted small">Elegante arreglo con follaje premium.</p>
-                <!-- Este botón invisible estira el clic a toda la tarjeta usando stretched-link -->
-                <button class="btn btn-link stretched-link text-decoration-none text-primary fw-medium" data-bs-toggle="modal" data-bs-target="#modalRosas">
-                    Ver cuidados 📋
-
-
 <!-- Botón Flotante para ver Favoritos -->
 <div class="container my-3 text-end">
     <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
@@ -74,7 +54,6 @@
                 </button>
                 <button class="btn btn-sm btn-outline-danger">
                     ❤️ Favorito
-
                 </button>
             </div>
         </div>
@@ -82,15 +61,7 @@
 
     <!-- 2. Tulipanes -->
     <div class="col">
-<<<<<<< HEAD
-        <div class="card h-100 shadow-sm text-center position-relative">
-            <img src="{{ url_for('static', filename='img/tulipanes.jpg') }}" alt="Caja de 10 Tulipanes" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-center">
-                <h5 class="fw-semibold text-dark">Caja de 10 Tulipanes</h5>
-                <p class="card-text text-muted small">Tulipanes holandeses en caja de lujo.</p>
-                <button class="btn btn-link stretched-link text-decoration-none text-primary fw-medium" data-bs-toggle="modal" data-bs-target="#modalTulipanes">
-                    Ver cuidados 📋
-           <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
             <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosTulipanes">
                 <div class="ratio ratio-4x3">
                     <img src="{{ url_for('static', filename='img/tulipanes.jpg') }}" alt="Caja de 10 Tulipanes" class="img-fluid rounded-top object-fit-cover">
@@ -123,15 +94,6 @@
 
     <!-- 3. Girasoles -->
     <div class="col">
-
-        <div class="card h-100 shadow-sm text-center position-relative">
-            <img src="{{ url_for('static', filename='img/girasoles.jpg') }}" alt="Girasoles Brillantes" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-center">
-                <h5 class="fw-semibold text-dark">Girasoles Brillantes</h5>
-                <p class="card-text text-muted small">Perfectos para iluminar el día de alguien.</p>
-                <button class="btn btn-link stretched-link text-decoration-none text-primary fw-medium" data-bs-toggle="modal" data-bs-target="#modalGirasoles">
-                    Ver cuidados 📋
-
         <div class="card h-100 shadow-sm border-0 d-flex flex-column">
             <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosGirasoles">
                 <div class="ratio ratio-4x3">
@@ -158,7 +120,6 @@
                 </button>
                 <button class="btn btn-sm btn-outline-danger">
                     ❤️ Favorito
-
                 </button>
             </div>
         </div>
@@ -166,15 +127,6 @@
 
     <!-- 4. Orquídea Blanca -->
     <div class="col">
-
-        <div class="card h-100 shadow-sm text-center position-relative">
-            <img src="{{ url_for('static', filename='img/orquidea.jpg') }}" alt="Orquídea Blanca" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-center">
-                <h5 class="fw-semibold text-dark">Orquídea Blanca Doble</h5>
-                <p class="card-text text-muted small">Planta de larga vida en maceta de cerámica.</p>
-                <button class="btn btn-link stretched-link text-decoration-none text-primary fw-medium" data-bs-toggle="modal" data-bs-target="#modalOrquidea">
-                    Ver cuidados 📋
-
         <div class="card h-100 shadow-sm border-0 d-flex flex-column">
             <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidadosOrquidea">
                 <div class="ratio ratio-4x3">
@@ -201,22 +153,10 @@
                 </button>
                 <button class="btn btn-sm btn-outline-danger">
                     ❤️ Favorito
-
                 </button>
             </div>
         </div>
     </div>
-
-
-    <!-- 5. Nueva: Lirios de la Paz -->
-    <div class="col">
-        <div class="card h-100 shadow-sm text-center position-relative">
-            <img src="{{ url_for('static', filename='img/lirios.jpg') }}" alt="Lirios de la Paz" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-center">
-                <h5 class="fw-semibold text-dark">Lirios de la Paz</h5>
-                <p class="card-text text-muted small">Hermosas flores blancas que purifican el hogar.</p>
-                <button class="btn btn-link stretched-link text-decoration-none text-primary fw-medium" data-bs-toggle="modal" data-bs-target="#modalLirios">
-                    Ver cuidados 📋
 
     <!-- 5. Lirios de la Paz -->
     <div class="col">
@@ -246,22 +186,10 @@
                 </button>
                 <button class="btn btn-sm btn-danger">
                     ❤️ En Favoritos
-
                 </button>
             </div>
         </div>
     </div>
-
-<<<<<<< HEAD
-    <!-- 6. Nueva: Suculentas -->
-    <div class="col">
-        <div class="card h-100 shadow-sm text-center position-relative">
-            <img src="{{ url_for('static', filename='img/suculentas.jpg') }}" alt="Jardín de Suculentas" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-center">
-                <h5 class="fw-semibold text-dark">Jardín de Suculentas</h5>
-                <p class="card-text text-muted small">Variedad de plantas desérticas en base minimalista.</p>
-                <button class="btn btn-link stretched-link text-decoration-none text-primary fw-medium" data-bs-toggle="modal" data-bs-target="#modalSuculentas">
-                    Ver cuidados 📋
 
     <!-- 6. Suculentas -->
     <div class="col">
@@ -291,7 +219,6 @@
                 </button>
                 <button class="btn btn-sm btn-outline-danger">
                     ❤️ Favorito
-
                 </button>
             </div>
         </div>
@@ -299,104 +226,6 @@
 
 </div>
 
-
-<!-- Modal Rosas -->
-<div class="modal fade" id="modalRosas" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Guía de Cuidados: Rosas Rojas</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fs-6">
-                <p><strong>Dificultad de cuidado:</strong> <span class="badge bg-warning text-dark">Media</span></p>
-                <p><strong>Frecuencia de riego:</strong> Cada 2 o 3 días.</p>
-                <p><strong>Tipo de regado:</strong> Moderado. Si están en florero, cambia el agua por completo cada dos días. Si es planta en maceta, ocupa aproximadamente 500ml de agua por regada, directo en la tierra.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Tulipanes -->
-<div class="modal fade" id="modalTulipanes" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Guía de Cuidados: Tulipanes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fs-6">
-                <p><strong>Dificultad de cuidado:</strong> <span class="badge bg-danger">Alta (Sensibles al calor)</span></p>
-                <p><strong>Frecuencia de riego:</strong> Cada 2 días.</p>
-                <p><strong>Tipo de regado:</strong> Leve. Prefieren agua muy fría (puedes agregar cubos de hielo al florero). En maceta, ocupa unos 200ml bien distribuidos sin inundar el bulbo.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Girasoles -->
-<div class="modal fade" id="modalGirasoles" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Guía de Cuidados: Girasoles</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fs-6">
-                <p><strong>Dificultad de cuidado:</strong> <span class="badge bg-success">Baja</span></p>
-                <p><strong>Frecuencia de riego:</strong> Cada 2 días.</p>
-                <p><strong>Tipo de regado:</strong> Abundante. Toman mucha agua. En maceta o jardín requieren un regado profundo de aproximadamente 1 litro de agua por ocasión directo al suelo.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Orquídea -->
-<div class="modal fade" id="modalOrquidea" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Guía de Cuidados: Orquídea Blanca</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fs-6">
-                <p><strong>Dificultad de cuidado:</strong> <span class="badge bg-danger">Alta</span></p>
-                <p><strong>Frecuencia de riego:</strong> Cada 7 a 10 días (solo cuando veas sus raíces de color gris).</p>
-                <p><strong>Tipo de regado:</strong> Por inmersión. Sumerge la maceta interna plástica en agua por 15 minutos (utiliza unos 300ml de agua filtrada) y escúrrela perfectamente.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Lirios -->
-<div class="modal fade" id="modalLirios" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Guía de Cuidados: Lirios de la Paz</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fs-6">
-                <p><strong>Dificultad de cuidado:</strong> <span class="badge bg-success">Baja</span></p>
-                <p><strong>Frecuencia de riego:</strong> 1 o 2 veces por semana (cuando notes sus hojas ligeramente caídas).</p>
-                <p><strong>Tipo de regado:</strong> Moderado. Usa unos 400ml de agua por riego. Agradece que pulverices agua en sus hojas para simular humedad, sin encharcar el suelo.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Suculentas -->
-<div class="modal fade" id="modalSuculentas" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Guía de Cuidados: Jardín de Suculentas</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fs-6">
-                <p><strong>Dificultad de cuidado:</strong> <span class="badge bg-success">Muy Baja</span></p>
-                <p><strong>Frecuencia de riego:</strong> Cada 12 a 15 días (completamente seco el sustrato).</p>
-                <p><strong>Tipo de regado:</strong> Escaso. Requiere de 100ml a 150ml de agua por planta directo sobre la tierra. No mojes sus hojas carnosas ya que acumulan humedad y pueden pudrirse.</p>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="panelFavoritos" aria-labelledby="panelFavoritosLabel">
     <div class="offcanvas-header bg-light">
@@ -427,7 +256,6 @@
                     </div>
                 </div>
                 <button class="btn btn-sm btn-link text-muted text-decoration-none">❌</button>
-
             </div>
         </div>
     </div>
