@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Añadir Nueva Planta</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/agregar_planta" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la planta</label>
+                            <input type="text" name="nombre" class="form-control" placeholder="Ej. Cactus de Navidad" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción corta</label>
+                            <textarea name="descripcion" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la imagen (ej: cactus.jpg)</label>
+                            <input type="text" name="imagen" class="form-control" placeholder="Debe estar en static/img/" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Dificultad</label>
+                                <select name="dificultad" class="form-select">
+                                    <option value="Baja">Baja</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Alta">Alta</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Frecuencia de riego</label>
+                                <input type="text" name="frecuencia" class="form-control" placeholder="Ej. Cada 3 días" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Detalles del Riego</label>
+                            <input type="text" name="riego" class="form-control" placeholder="Ej. 200ml de agua reposada" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Guardar Planta</button>
+                            <a href="/" class="btn btn-link text-muted mt-2">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

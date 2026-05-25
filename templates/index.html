@@ -1,185 +1,81 @@
 {% extends "base.html" %}
 
-{% block title %}Flores y Regalos | EnviaFlores{% endblock %}
+{% block title %}Mi Invernadero | Catálogo{% endblock %}
 
 {% block content %}
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-body-tertiary mb-4 rounded shadow-sm">
   <div class="container-fluid d-flex justify-content-between align-items-center">
-    <a class="navbar-brand mb-0 h1">Busca tu planta</a>
+    <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
     
     <div class="d-flex align-items-center gap-3">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Aquí puedes encontrar tu planta" aria-label="Search"/>
-        <button class="btn btn-light" type="submit">Buscar</button>
+      <form class="d-flex" role="search" action="/" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Buscar planta..." aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
       
       <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
         ❤️ Favoritos 
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            2
-        </span>
       </button>
     </div>
   </div>
 </nav>
 
-<div class="container mt-3">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-</div>
-
 {% if administrador %}
 <div class="container mb-4 text-start">
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarPlanta">
+    <a href="{{ url_for('agregar_planta') }}" class="btn btn-success shadow-sm">
         ➕ Agregar Nueva Planta al Catálogo
-    </button>
+    </a>
 </div>
 {% endif %}
 
 <section class="catalog-header text-center mb-5">
-    <h2 class="catalog-title fw-bold">Arreglos Florales Destacados</h2>
-    <p class="catalog-subtitle text-muted">Haz clic en cada tarjeta para ver sus cuidados y añadirlas a tus favoritos.</p>
+    <h2 class="catalog-title fw-bold">Plantas Disponibles</h2>
+    <p class="catalog-subtitle text-muted">Cuidados personalizados para cada especie.</p>
 </section>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for planta in plantas %}
     <div class="col">
-        <div class="card h-100 shadow-sm border-0 d-flex flex-column">
-            <div role="button" data-bs-toggle="collapse" data-bs-target="#cuidados{{ planta._id }}">
+        <div class="card h-100 shadow-sm border-0">
+            <div role="button" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
                 <div class="ratio ratio-4x3">
-                    <img src="{{ url_for('static', filename='img/rosas.jpg') }}" alt="{{ planta.nombre }}" class="img-fluid rounded-top object-fit-cover">
+                    <img src="{{ url_for('static', filename='img/' + planta.imagen) if planta.imagen else 'https://via.placeholder.com/400x300' }}" 
+                         class="img-fluid rounded-top object-fit-cover" alt="{{ planta.nombre }}">
                 </div>
-                <div class="card-body pb-0">
-                    <h5 class="fw-semibold text-dark fs-5 text-truncate">{{ planta.nombre }}</h5>
-                    <p class="card-text text-muted small text-truncate">{{ planta.especie }}</p>
+                <div class="card-body">
+                    <h5 class="fw-semibold text-dark">{{ planta.nombre }}</h5>
+                    <p class="card-text text-muted small">{{ planta.descripcion }}</p>
                 </div>
             </div>
             
-            <div class="collapse" id="cuidados{{ planta._id }}">
-                <div class="card-body bg-light border-top border-bottom py-3">
-                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">📋 Guía de Cuidados</h6>
-                    <p class="mb-0 small"><strong>Estado / Riego:</strong> {{ planta.estado or 'Sin especificar' }}</p>
+            <div class="collapse" id="care-{{ loop.index }}">
+                <div class="card-body bg-light border-top py-3">
+                    <h6 class="fw-bold text-secondary small mb-2">📋 GUÍA DE CUIDADOS</h6>
+                    <p class="mb-1 small"><strong>Dificultad:</strong> {{ planta.dificultad }}</p>
+                    <p class="mb-1 small"><strong>Riego:</strong> {{ planta.riego }}</p>
+                    <p class="mb-0 small"><strong>Frecuencia:</strong> {{ planta.frecuencia }}</p>
                 </div>
             </div>
 
-            <div class="card-body d-flex justify-content-between align-items-center bg-white rounded-bottom mt-auto pt-2">
-                <button class="btn btn-link p-0 text-decoration-none small text-primary" data-bs-toggle="collapse" data-bs-target="#cuidados{{ planta._id }}">
-                    ℹ️ Ver cuidados
+            <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center pb-3">
+                <button class="btn btn-link p-0 text-decoration-none small" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
+                    ℹ️ Cuidados
                 </button>
-                
-                <div class="d-flex gap-2">
-                    {% if administrador %}
-                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditar{{ planta._id }}">✏️ Editar</button>
-                        <a href="/planta/eliminar/{{ planta._id }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar esta planta del catálogo?')">🗑️ Borrar</a>
-                    {% else %}
-                        <button class="btn btn-sm btn-outline-danger">❤️ Favorito</button>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% if administrador %}
-    <div class="modal fade" id="modalEditar{{ planta._id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title">Modificar {{ planta.nombre }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="/planta/editar/{{ planta._id }}" method="POST">
-                    <div class="modal-body text-start">
-                        <div class="mb-3">
-                            <label class="form-label">Nombre de la Planta:</label>
-                            <input type="text" name="nombre" class="form-control" value="{{ planta.nombre }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Especie:</label>
-                            <input type="text" name="especie" class="form-control" value="{{ planta.especie }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Guía de Cuidados / Estado:</label>
-                            <input type="text" name="estado" class="form-control" value="{{ planta.estado }}">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    </div>
+                <form action="#" method="POST" class="m-0">
+                    <input type="hidden" name="planta_id" value="{{ planta._id }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">❤️</button>
                 </form>
             </div>
         </div>
     </div>
-    {% endif %}
-
     {% else %}
-    <div class="container text-center py-5">
-        <p class="text-muted">No hay plantas registradas en el catálogo actual.</p>
+    <div class="col-12 text-center py-5">
+        <div class="alert alert-light border shadow-sm py-5">
+            <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+            <p class="text-muted fs-5">No se encontraron plantas que coincidan con tu búsqueda.</p>
+            <a href="/" class="btn btn-secondary mt-2">Ver todo el catálogo</a>
+        </div>
     </div>
     {% endfor %}
-</div>
-
-{% if administrador %}
-<div class="modal fade" id="modalAgregarPlanta" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Añadir Planta al Inventario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="/planta/agregar" method="POST">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre Común:</label>
-                        <input type="text" name="nombre" class="form-control" placeholder="Ej. Girasol Extremo" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Especie / Descripción:</label>
-                        <input type="text" name="especie" class="form-control" placeholder="Ej. Helianthus annuus" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Cuidados o Estado:</label>
-                        <input type="text" name="estado" class="form-control" placeholder="Ej. Mucho sol, riego cada 2 días.">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-success">Dar de Alta</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-{% endif %}
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="panelFavoritos" aria-labelledby="panelFavoritosLabel">
-    <div class="offcanvas-header bg-light">
-        <h5 class="offcanvas-title fw-bold" id="panelFavoritosLabel">❤️ Mis Flores Favoritas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <p class="text-muted small mb-4">Aquí se mostrarán las plantas que guardes para revisar sus cuidados rápido.</p>
-        
-        <div class="list-group list-group-flush">
-            <div class="list-group-item d-flex align-items-center justify-content-between py-3 px-0">
-                <div class="d-flex align-items-center">
-                    <img src="{{ url_for('static', filename='img/tulipanes.jpg') }}" alt="" class="rounded me-3 object-fit-cover" style="width: 50px; height: 50px;">
-                    <div>
-                        <h6 class="mb-0 fw-semibold">Caja de 10 Tulipanes</h6>
-                        <small class="text-danger">Dificultad: Alta</small>
-                    </div>
-                </div>
-                <button class="btn btn-sm btn-link text-muted text-decoration-none">❌</button>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}
