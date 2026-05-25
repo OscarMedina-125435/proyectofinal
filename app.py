@@ -55,7 +55,6 @@ def registro():
     return render_template('registro.html')
 
 
- 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -122,7 +121,7 @@ def verificar_codigo():
             flash("¡Código correcto! Ya puedes cambiar tu contraseña.", "success")
             return redirect(url_for('nueva_contrasena')) 
         else:
-            flash("El código es incorrecto, revísalo bien.", "danger")
+            flash("El código es incorrecto.", "danger")
             
     return render_template('verificar_codigo.html')
 
@@ -149,6 +148,20 @@ def nueva_contrasena():
         flash("intenta cambiarla otra vez.", "danger")
 
     return render_template('nueva_contrasena.html')
+
+
+@app.route('/planta/agregar', methods=['POST'])
+def agregar_planta():
+    nombre = request.form.get('nombre')
+    especie = request.form.get('especie')
+    estado = request.form.get('estado')
+
+    # Usas el método que acabas de crear:
+    db_mongo.insertar_planta(nombre, especie, estado) 
+    
+    return redirect(url_for('index'))
+
+
 
 
 @app.route("/logout")

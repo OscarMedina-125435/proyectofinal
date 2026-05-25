@@ -74,5 +74,38 @@ class Plantas:
     def obtener_plantas(self):
         return self.db.plantas.find()
 
+    def insertar_planta(self, nombre, especie, estado):
+        try:
+            resultado = self.db.plantas.insert_one({
+                "nombre": nombre,
+                "especie": especie,
+                "estado": estado,
+                "fecha_registro": datetime.now()
+            })
+            return str(resultado.inserted_id)
+        except Exception as e:
+            print(f"Error al insertar planta: {e}")
+            return None
+
+    def actualizar_planta(self, planta_id, nombre, especie, estado):
+        try:
+            resultado = self.db.plantas.update_one(
+                {"_id": ObjectId(planta_id)},
+                {"$set": {"nombre": nombre, "especie": especie, "estado": estado}}
+            )
+            return resultado.modified_count > 0
+        except Exception as e:
+            print(f"Error al actualizar planta: {e}")
+            return False
+
+    def eliminar_planta(self, planta_id):
+        try:
+            resultado = self.db.plantas.delete_one({"_id": ObjectId(planta_id)})
+            return resultado.deleted_count > 0
+        except Exception as e:
+            print(f"Error al eliminar planta: {e}")
+            return False
+
+
 if __name__ == "__main__":
     add_plants = Plantas()
