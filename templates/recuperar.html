@@ -6,7 +6,6 @@
         <div class="card-body">
             <div class="text-center mb-4">
                 <h2 class="fw-bold fs-3">¿Tienes problemas para entrar?</h2>
-                <!-- CAMBIO: Ahora dice "un código" en vez de "un enlace" -->
                 <p class="text-muted small">Introduce tu correo electrónico y te enviaremos un código para recuperar tu cuenta.</p>
             </div>
 
@@ -22,8 +21,7 @@
                 </div>
 
                 <div class="d-grid">
-                    <!-- CAMBIO: Texto del botón -->
-                    <button type="submit" class="btn btn-enviar">
+                    <button type="submit" class="btn bg-danger-subtle fw-bold">
                         Enviar código de recuperación
                     </button>
                 </div>
@@ -31,7 +29,7 @@
 
             <div class="text-center mt-4">
                 <hr class="text-secondary">
-                <a href="{{ url_for('login') }}" class="text-decoration-none fw-bold small">
+                <a href="{{ url_for('login') }}" class="text-decoration-none bg-danger-subtle">
                     Volver al inicio de sesión
                 </a>
             </div>
