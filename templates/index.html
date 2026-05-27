@@ -4,8 +4,8 @@
 
 {% block content %}
 <nav class="navbar bg-body-tertiary mb-4 rounded shadow-sm">
-  <div class="container-fluid d-flex justify-content-between align-items-center">
-    <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
     
     <div class="d-flex align-items-center gap-3">
       <form class="d-flex" role="search" action="/" method="GET">
@@ -61,10 +61,21 @@
                 <button class="btn btn-link p-0 text-decoration-none small" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
                     ℹ️ Cuidados
                 </button>
-                <form action="#" method="POST" class="m-0">
-                    <input type="hidden" name="planta_id" value="{{ planta._id }}">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">❤️</button>
-                </form>
+                
+                <div class="d-flex align-items-center gap-2">
+                    {% if administrador %}
+                    <a href="{{ url_for('eliminar_planta', id=planta._id) }}" 
+                       class="btn btn-sm btn-outline-danger"
+                       title="Eliminar planta">
+                       🗑️
+                    </a>
+                    {% endif %}
+
+                    <form action="#" method="POST" class="m-0">
+                        <input type="hidden" name="planta_id" value="{{ planta._id }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">❤️</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

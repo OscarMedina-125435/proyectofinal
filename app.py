@@ -7,7 +7,8 @@ from plantas import Plantas
 app = Flask(__name__)
 app.secret_key = "Mi_clave_luz_oscar"
 
-# Configuración de Mail
+# CONFIGURA EL EMAIL DE ADMINISTRADOR PARA RECUPERACIÓN DE CONTRASEÑA
+
 app.config.update(
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=587,
@@ -21,19 +22,13 @@ mail = Mail(app)
 db_mongo = Plantas()
 pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
-
-### Rutas Principales
-
 @app.route('/')
 def index():
     if not session.get("usuarioo"):
         return redirect(url_for('login'))
         
     query = request.args.get('q', '')
-    if query:
-        mis_plantas = db_mongo.db.plantas.find({"nombre": {"$regex": query, "$options": "i"}})
-    else:
-        mis_plantas = db_mongo.db.plantas.find()
+    mis_plantas = db_mongo.obtener_plantas(query)
 
     return render_template('index.html',
                             usuarioo=session.get('usuarioo'), 
@@ -71,9 +66,6 @@ def registro():
         flash("El email ya existe.", "danger")
     return render_template('registro.html')
 
-
-### Rutas de Recuperación (Añadidas para solucionar el BuildError)
-
 @app.route('/recuperar', methods=['GET', 'POST'])
 def recuperar():
     if request.method == 'POST':
@@ -95,7 +87,6 @@ def recuperar():
                 flash("Te enviamos un código a tu correo.", "success")
                 return redirect(url_for('verificar_codigo'))
             except Exception as e:
-                print("Error al enviar el correo:", e)
                 flash("Error al enviar el correo. Intenta más tarde.", "danger")
         else:
             flash("Ese correo no está registrado.", "danger")
@@ -135,9 +126,6 @@ def nueva_contrasena():
             
     return render_template('nueva_contrasena.html')
 
-
-### Gestión de Catálogo y Sesión
-
 @app.route('/agregar_planta', methods=['GET', 'POST'])
 def agregar_planta():
     if not session.get('administrador'):
@@ -153,11 +141,29 @@ def agregar_planta():
             "riego": request.form.get('riego'),
             "frecuencia": request.form.get('frecuencia')
         }
-        db_mongo.db.plantas.insert_one(nueva_planta)
+        # aqui utiliza el metodo de plantas.py para insertar la nueva planta
+        
+        db_mongo.insertar_planta(nueva_planta)
         flash("¡Planta añadida con éxito!", "success")
         return redirect(url_for('index'))
 
     return render_template('agregar_planta.html')
+
+@app.route('/eliminar_planta/<id>')
+def eliminar_planta(id):
+    
+    # SOLO ADMINISTRADORES PUEDEN ELIMINAR PLANTAS
+    
+    if not session.get('administrador'):
+        flash("Acceso denegado: Se requieren permisos de administrador.")
+        return redirect(url_for('index'))
+
+    if db_mongo.eliminar_planta(id):
+        flash("La planta ha sido eliminada del sistema.")
+    else:
+        flash("Error: No se pudo encontrar o eliminar la planta.")
+        
+    return redirect(url_for('index'))
 
 @app.route("/logout")
 def logout():

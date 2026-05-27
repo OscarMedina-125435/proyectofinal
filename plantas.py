@@ -9,15 +9,17 @@ class Plantas:
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
             self.cliente.admin.command('ping')
             
-            self.db = self.cliente['plantas']  # Base de datos principal
-            self.usuarios = self.db['usuarios'] # Colección de personas
-            self.coleccion_plantas = self.db['plantas'] # Colección de las plantas físicas # Referencia clara a la colección de plantas
+            self.db = self.cliente['plantas']
+            self.usuarios = self.db['usuarios']
+            self.coleccion_plantas = self.db['plantas'] 
             
             self.usuarios.create_index("email", unique=True)
             print("✅ Conexión a Atlas Exitosa")
         except ConnectionFailure:
             print("❌ Error: No se pudo conectar a MongoDB Atlas")
             raise
+    
+    # --- MÉTODOS DE USUARIOS ---
     
     def crear_usuario(self, nombre, email, password):
         try:
@@ -49,4 +51,40 @@ class Plantas:
             )
             return resultado.modified_count > 0
         except Exception as e:
+            return False
+
+    # --- MÉTODOS DE PLANTAS ---
+
+    def obtener_plantas(self, filtro_nombre=None):
+        """Busca plantas. Si hay filtro, usa regex; si no, trae todas."""
+        try:
+            if filtro_nombre:
+                # La búsqueda "i" es para que no importe mayúsculas/minúsculas
+                return list(self.coleccion_plantas.find({
+                    "nombre": {"$regex": filtro_nombre, "$options": "i"}
+                }))
+            return list(self.coleccion_plantas.find())
+        except Exception as e:
+            print(f"Error al obtener plantas: {e}")
+            return []
+
+    def insertar_planta(self, datos_planta):
+        """Guarda una nueva planta en la colección."""
+        try:
+            resultado = self.coleccion_plantas.insert_one(datos_planta)
+            return resultado.inserted_id
+        except Exception as e:
+            print(f"Error al insertar planta: {e}")
+            return None
+        
+    def eliminar_planta(self, planta_id):
+        try:
+            from bson.objectid import ObjectId
+            
+            # BORRA EL DOCUMENTO CON EL _id ESPECÍFICO
+            
+            resultado = self.coleccion_plantas.delete_one({"_id": ObjectId(planta_id)})
+            return resultado.deleted_count > 0
+        except Exception as e:
+            print(f"Error al eliminar planta: {e}")
             return False
