@@ -7,7 +7,7 @@ from plantas import Plantas
 app = Flask(__name__)
 app.secret_key = "Mi_clave_luz_oscar"
 
-# CONFIGURA EL EMAIL DE ADMINISTRADOR PARA RECUPERACIÓN DE CONTRASEÑA
+
 
 app.config.update(
     MAIL_SERVER='smtp.gmail.com',
@@ -50,7 +50,7 @@ def login():
             flash("¡Bienvenido de nuevo!", "success")
             return redirect(url_for('index'))
         
-        flash("Credenciales incorrectas", "danger")
+        flash("icorrectas", "danger")
     return render_template('login.html')
 
 @app.route('/registro', methods=['GET', 'POST'])
@@ -129,7 +129,7 @@ def nueva_contrasena():
 @app.route('/agregar_planta', methods=['GET', 'POST'])
 def agregar_planta():
     if not session.get('administrador'):
-        flash("Acceso denegado", "danger")
+        flash( "Denegado","danger")
         return redirect(url_for('index'))
 
     if request.method == 'POST':
