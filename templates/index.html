@@ -13,7 +13,7 @@
         <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
       
-      <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
+      <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="Favoritos">
         ❤️ Favoritos 
       </button>
     </div>
@@ -22,7 +22,7 @@
 
 {% if administrador %}
 <div class="container mb-4 text-start">
-    <a href="{{ url_for('agregar_planta') }}" class="btn btn-success shadow-sm">
+    <a href="{{ url_for('agregar_planta') }}" class="shadow-sm btn btn-outline-danger">
         ➕ Agregar Nueva Planta al Catálogo
     </a>
 </div>
