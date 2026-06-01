@@ -22,6 +22,8 @@ mail = Mail(app)
 db_mongo = Plantas()
 pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
+# ... (Tus otras configuraciones de Flask, Mail y db_mongo arriba)
+
 @app.route('/')
 def index():
     if not session.get("usuarioo"):
@@ -30,10 +32,37 @@ def index():
     query = request.args.get('q', '')
     mis_plantas = db_mongo.obtener_plantas(query)
 
+    # --- NUEVO: Gestión de Favoritos ---
+    email_actual = session.get('email_usuario')
+    mis_favoritos = db_mongo.obtener_favoritos_usuario(email_actual)
+    
+    # Obtenemos la lista cruda de IDs del usuario para comprobar estados en Jinja
+    usuario_data = db_mongo.buscar_usuario(email_actual)
+    lista_ids_favoritos = usuario_data.get('favoritos', []) if usuario_data else []
+
     return render_template('index.html',
                             usuarioo=session.get('usuarioo'), 
                             administrador=session.get('administrador'), 
-                            plantas=mis_plantas)
+                            plantas=mis_plantas,
+                            favoritos=mis_favoritos,          # Envía las plantas favoritas
+                            lista_ids_favoritos=lista_ids_favoritos) # Envía los IDs para los botones
+
+
+@app.route('/favorito', methods=['POST'])
+def favorito():
+    if not session.get("usuarioo"):
+        return redirect(url_for('login'))
+        
+    planta_id = request.form.get('planta_id')
+    email_usuario = session.get('email_usuario')
+    
+    if planta_id and email_usuario:
+        db_mongo.alternar_favorito(email_usuario, planta_id)
+        
+    # Regresa automáticamente a la misma página donde estaba el usuario
+    return redirect(request.referrer or url_for('index'))
+
+# @app.route('/login', methods=['GET', 'POST']) ... (El resto de tus rutas siguen aquí abajo igual)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

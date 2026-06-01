@@ -20,14 +20,21 @@
                     <div class="d-inline-block">
                 <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo Mi Invernadero" class="rounded-circle object-fit-cover" style="width: 50px; height: 50px;">
         </div>
-                <span>Mi invernadero 🌳</span>
+                <span>Mi invernadero </span>
             </a>
 
             <div class="dropdown me-3">
-                <button class="btn btn-link text-light fs-4 p-0 border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
-                </button>
+    <button class="btn btn-link text-light fs-4 p-0 border-0 d-flex align-items-center gap-2 text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        
+        {% if session.get('usuarioo') %}
+            <span class="text-white fw-medium small d-none d-md-inline" style="font-size: 0.9rem;">
+                {{ session.get('usuarioo') }}
+            </span>
+        {% endif %}
+        
+        <i class="bi bi-person-circle"></i>
+    </button>
+
                 <ul class="dropdown-menu dropdown-menu-end">
                     {% if session.get('usuarioo') %}
                     <li>

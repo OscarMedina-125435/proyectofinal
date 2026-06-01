@@ -4,8 +4,8 @@
 
 {% block content %}
 <nav class="navbar bg-body-tertiary mb-4 rounded shadow-sm">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
     
     <div class="d-flex align-items-center gap-3">
       <form class="d-flex" role="search" action="/" method="GET">
@@ -71,9 +71,14 @@
                     </a>
                     {% endif %}
 
-                    <form action="#" method="POST" class="m-0">
-                        <input type="hidden" name="planta_id" value="{{ planta._id }}">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">❤️</button>
+                    <form action="{{ url_for('favorito') }}" method="POST" class="m-0">
+                        <input type="hidden" name="planta_id" value="{{ planta._id|string }}">
+                    
+                        {% if planta._id|string in lista_ids_favoritos %}
+                        <button type="submit" class="btn btn-sm btn-danger shadow-sm">❤️</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">🖤</button>
+                        {% endif %}
                     </form>
                 </div>
             </div>
@@ -88,5 +93,46 @@
         </div>
     </div>
     {% endfor %}
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="panelFavoritos" aria-labelledby="panelFavoritosLabel">
+    <div class="offcanvas-header bg-light border-bottom">
+        <h5 class="offcanvas-title fw-bold text-success" id="panelFavoritosLabel">
+            <i class="bi bi-heart-fill text-danger me-2"></i>Mis Favoritos
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    
+    <div class="offcanvas-body">
+        {% if favoritos %}
+            <div class="list-group list-group-flush">
+                {% for fav in favoritos %}
+                    <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{{ url_for('static', filename='img/' + fav.imagen) if fav.imagen else 'https://via.placeholder.com/100' }}" 
+                                 alt="{{ fav.nombre }}" class="rounded object-fit-cover" style="width: 45px; height: 45px;">
+                            <div>
+                                <h6 class="mb-0 fw-semibold text-dark">{{ fav.nombre }}</h6>
+                                <p class="mb-0 text-muted small text-truncate" style="max-width: 160px;">{{ fav.descripcion }}</p>
+                            </div>
+                        </div>
+                        
+                        <form action="{{ url_for('favorito') }}" method="POST" class="m-0">
+                            <input type="hidden" name="planta_id" value="{{ fav._id|string }}">
+                            <button type="submit" class="btn btn-link link-danger p-0 border-0" title="Quitar de favoritos">
+                                <i class="bi bi-trash3-fill fs-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-heartbreak text-muted display-4 mb-3 d-block"></i>
+                <p class="text-muted fw-medium">No tienes plantas favoritas todavía.</p>
+                <p class="small text-muted px-3">Pulsa el corazón de tus especies preferidas en el catálogo para verlas aquí.</p>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

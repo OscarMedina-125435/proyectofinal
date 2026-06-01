@@ -88,3 +88,45 @@ class Plantas:
         except Exception as e:
             print(f"Error al eliminar planta: {e}")
             return False
+
+            # --- MÉTODOS DE FAVORITOS ---
+
+    def alternar_favorito(self, email_usuario, planta_id):
+        """Agrega o quita una planta de los favoritos del usuario (Toggle)."""
+        try:
+            usuario = self.buscar_usuario(email_usuario)
+            if not usuario:
+                return False
+
+            favoritos = usuario.get('favoritos', [])
+
+            if planta_id in favoritos:
+                # Si ya es favorito, lo removemos
+                self.usuarios.update_one(
+                    {"email": email_usuario},
+                    {"$pull": {"favoritos": planta_id}}
+                )
+            else:
+                # Si no es favorito, lo agregamos
+                self.usuarios.update_one(
+                    {"email": email_usuario},
+                    {"$addToSet": {"favoritos": planta_id}}
+                )
+            return True
+        except Exception as e:
+            print(f"Error al alternar favorito: {e}")
+            return False
+
+    def obtener_favoritos_usuario(self, email_usuario):
+        """Devuelve los documentos completos de las plantas favoritas del usuario."""
+        try:
+            usuario = self.buscar_usuario(email_usuario)
+            if not usuario or 'favoritos' not in usuario:
+                return []
+            
+            # Convertimos las IDs de texto a ObjectIds de Mongo para buscarlas
+            ids_plantas = [ObjectId(pid) for pid in usuario['favoritos']]
+            return list(self.coleccion_plantas.find({"_id": {"$in": ids_plantas}}))
+        except Exception as e:
+            print(f"Error al obtener favoritos: {e}")
+            return []
