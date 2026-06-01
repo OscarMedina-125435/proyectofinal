@@ -8,12 +8,11 @@
     <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
     
     <div class="d-flex align-items-center gap-3">
-      <form class="d-flex" role="search" action="/" method="GET">
+        <form class="d-flex" role="search" action="/" method="GET">
         <input class="form-control me-2" type="search" name="q" placeholder="Buscar planta..." aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Buscar</button>
-      </form>
-      
-      <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
+    </form>
+    <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
         ❤️ Favoritos 
       </button>
     </div>
@@ -40,7 +39,7 @@
             <div role="button" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
                 <div class="ratio ratio-4x3">
                     <img src="{{ url_for('static', filename='img/' + planta.imagen) if planta.imagen else 'https://via.placeholder.com/400x300' }}" 
-                         class="img-fluid rounded-top object-fit-cover" alt="{{ planta.nombre }}">
+                        class="img-fluid rounded-top object-fit-cover" alt="{{ planta.nombre }}">
                 </div>
                 <div class="card-body">
                     <h5 class="fw-semibold text-dark">{{ planta.nombre }}</h5>
@@ -64,11 +63,13 @@
                 
                 <div class="d-flex align-items-center gap-2">
                     {% if administrador %}
+                    <a href="{{ url_for('editar_planta', id=planta._id|string) }}"
+                    class="btn btn-sm btn-outline-warning"
+                    title="Editar planta">✏️</a>
+
                     <a href="{{ url_for('eliminar_planta', id=planta._id) }}" 
-                       class="btn btn-sm btn-outline-danger"
-                       title="Eliminar planta">
-                       🗑️
-                    </a>
+                    class="btn btn-sm btn-outline-danger"
+                    title="Eliminar planta">🗑️</a>
                     {% endif %}
 
                     <form action="{{ url_for('favorito') }}" method="POST" class="m-0">

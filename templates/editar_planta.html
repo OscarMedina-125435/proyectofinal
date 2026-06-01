@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning-subtle text-black rounded-0">
+                    <h4 class="mb-0">Editar Planta: {{ planta.nombre }}</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('editar_planta', id=planta._id|string) }}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la planta</label>
+                            <input type="text" name="nombre" class="form-control" value="{{ planta.nombre }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea name="descripcion" class="form-control" rows="3" required>{{ planta.descripcion }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la imagen (ej: tulipanes.jpg)</label>
+                            <input type="text" name="imagen" class="form-control" value="{{ planta.imagen }}" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Dificultad</label>
+                                <select name="dificultad" class="form-select">
+                                    <option value="Baja" {% if planta.dificultad == 'Baja' %}selected{% endif %}>Baja</option>
+                                    <option value="Media" {% if planta.dificultad == 'Media' %}selected{% endif %}>Media</option>
+                                    <option value="Alta" {% if planta.dificultad == 'Alta' %}selected{% endif %}>Alta</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Frecuencia de riego</label>
+                                <input type="text" name="frecuencia" class="form-control" value="{{ planta.frecuencia }}" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Detalles del Riego</label>
+                            <input type="text" name="riego" class="form-control" value="{{ planta.riego }}" required>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning">Actualizar Planta</button>
+                            <a href="/" class="btn btn-link text-black mt-2">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

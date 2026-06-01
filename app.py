@@ -31,11 +31,9 @@ def index():
     query = request.args.get('q', '')
     mis_plantas = db_mongo.obtener_plantas(query)
 
-    # --- NUEVO: Gestión de Favoritos ---
     email_actual = session.get('email_usuario')
     mis_favoritos = db_mongo.obtener_favoritos_usuario(email_actual)
     
-    # Obtenemos la lista cruda de IDs del usuario para comprobar estados en Jinja
     usuario_data = db_mongo.buscar_usuario(email_actual)
     lista_ids_favoritos = usuario_data.get('favoritos', []) if usuario_data else []
 
@@ -43,8 +41,8 @@ def index():
                             usuarioo=session.get('usuarioo'), 
                             administrador=session.get('administrador'), 
                             plantas=mis_plantas,
-                            favoritos=mis_favoritos,          # Envía las plantas favoritas
-                            lista_ids_favoritos=lista_ids_favoritos) # Envía los IDs para los botones
+                            favoritos=mis_favoritos,         
+                            lista_ids_favoritos=lista_ids_favoritos)
 
 
 @app.route('/favorito', methods=['POST'])
@@ -168,7 +166,6 @@ def agregar_planta():
             "riego": request.form.get('riego'),
             "frecuencia": request.form.get('frecuencia')
         }
-        # aqui utiliza el metodo de plantas.py para insertar la nueva planta
         
         db_mongo.insertar_planta(nueva_planta)
         flash("¡Planta añadida con éxito!", "success")
@@ -178,8 +175,6 @@ def agregar_planta():
 
 @app.route('/eliminar_planta/<id>')
 def eliminar_planta(id):
-    
-    # SOLO ADMINISTRADORES PUEDEN ELIMINAR PLANTAS
     
     if not session.get('administrador'):
         flash("Acceso denegado: Se requieren permisos de administrador.")
@@ -192,6 +187,41 @@ def eliminar_planta(id):
         
     return redirect(url_for('index'))
 
+@app.route('/editar_planta/<id>', methods=['GET', 'POST'])
+def editar_planta(id):
+    
+    variables_globales = globals()
+    instancia_plantas = None
+    
+    for nombre_var, valor in variables_globales.items():
+        if valor.__class__.__name__ == 'Plantas':
+            instancia_plantas = valor
+            break
+
+    if not instancia_plantas:
+        if 'plantas' in variables_globales:
+            instancia_plantas = variables_globales['plantas']
+        else:
+            return "Error: No se encontró la conexión a la base de datos en app.py", 500
+
+    if request.method == 'POST':
+        datos_actualizados = {
+            "nombre": request.form.get('nombre'),
+            "descripcion": request.form.get('descripcion'),
+            "imagen": request.form.get('imagen'),
+            "dificultad": request.form.get('dificultad'),
+            "frecuencia": request.form.get('frecuencia'),
+            "riego": request.form.get('riego')
+        }
+
+        instancia_plantas.actualizar_planta(id, datos_actualizados)
+        return redirect(url_for('index')) 
+
+    planta_encontrada = instancia_plantas.obtener_planta_por_id(id)
+    if not planta_encontrada:
+        return "La planta que intentas editar no existe.", 404
+        
+    return render_template('editar_planta.html', planta=planta_encontrada)
 
 @app.route('/comentarios')
 def comentario():
@@ -209,8 +239,7 @@ def sugerencias():
         flash("¡Sugerencia enviada!", "success")
     return redirect('/comentarios')
 
-#nuevo
-@app.route('/sugerencia/procesar/<id>', methods=['POST'])  # URL más limpia
+@app.route('/sugerencia/procesar/<id>', methods=['POST']) 
 def procesar_sugerencia(id):
     accion = request.form.get('accion') 
     try:

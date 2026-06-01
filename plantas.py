@@ -19,7 +19,6 @@ class Plantas:
             print("❌ Error: No se pudo conectar a MongoDB Atlas")
             raise
     
-    # --- MÉTODOS DE USUARIOS ---
     
     def crear_usuario(self, nombre, email, password):
         try:
@@ -53,13 +52,11 @@ class Plantas:
         except Exception as e:
             return False
 
-    # --- MÉTODOS DE PLANTAS ---
 
     def obtener_plantas(self, filtro_nombre=None):
         """Busca plantas. Si hay filtro, usa regex; si no, trae todas."""
         try:
             if filtro_nombre:
-                # La búsqueda "i" es para que no importe mayúsculas/minúsculas
                 return list(self.coleccion_plantas.find({
                     "nombre": {"$regex": filtro_nombre, "$options": "i"}
                 }))
@@ -81,15 +78,11 @@ class Plantas:
         try:
             from bson.objectid import ObjectId
             
-            # BORRA EL DOCUMENTO CON EL _id ESPECÍFICO
-            
             resultado = self.coleccion_plantas.delete_one({"_id": ObjectId(planta_id)})
             return resultado.deleted_count > 0
         except Exception as e:
             print(f"Error al eliminar planta: {e}")
             return False
-
-            # --- MÉTODOS DE FAVORITOS ---
 
     def alternar_favorito(self, email_usuario, planta_id):
         """Agrega o quita una planta de los favoritos del usuario (Toggle)."""
@@ -101,13 +94,11 @@ class Plantas:
             favoritos = usuario.get('favoritos', [])
 
             if planta_id in favoritos:
-                # Si ya es favorito, lo removemos
                 self.usuarios.update_one(
                     {"email": email_usuario},
                     {"$pull": {"favoritos": planta_id}}
                 )
             else:
-                # Si no es favorito, lo agregamos
                 self.usuarios.update_one(
                     {"email": email_usuario},
                     {"$addToSet": {"favoritos": planta_id}}
@@ -124,9 +115,29 @@ class Plantas:
             if not usuario or 'favoritos' not in usuario:
                 return []
             
-            # Convertimos las IDs de texto a ObjectIds de Mongo para buscarlas
             ids_plantas = [ObjectId(pid) for pid in usuario['favoritos']]
             return list(self.coleccion_plantas.find({"_id": {"$in": ids_plantas}}))
         except Exception as e:
             print(f"Error al obtener favoritos: {e}")
             return []
+        
+    def obtener_planta_por_id(self, planta_id):
+        """Busca una sola planta por su ObjectId."""
+        try:
+            return self.coleccion_plantas.find_one({"_id": ObjectId(planta_id)})
+        except Exception as e:
+            print(f"Error al obtener planta por ID: {e}")
+            return None
+
+    def actualizar_planta(self, planta_id, nuevos_datos):
+        """Actualiza los datos de una planta existente."""
+        try:
+            resultado = self.coleccion_plantas.update_one(
+                {"_id": ObjectId(planta_id)},
+                {"$set": nuevos_datos}
+            )
+            return resultado.modified_count > 0
+        except Exception as e:
+            print(f"Error al actualizar planta: {e}")
+            return False
+
