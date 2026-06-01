@@ -12,6 +12,8 @@ class Plantas:
             self.db = self.cliente['plantas']
             self.usuarios = self.db['usuarios']
             self.coleccion_plantas = self.db['plantas'] 
+            self.comentarios = self.db['comentarios']
+            self.sugerencias = self.db['sugerencias']
             
             self.usuarios.create_index("email", unique=True)
             print("✅ Conexión a Atlas Exitosa")
@@ -141,3 +143,57 @@ class Plantas:
             print(f"Error al actualizar planta: {e}")
             return False
 
+    def obtener_comentarios(self):
+        try:
+            return list(self.comentarios.find().sort("_id", -1))
+        except Exception as e:
+            print(f"Error al obtener comentarios: {e}")
+            return []
+
+    def insertar_comentario(self, nombre, texto):
+        try:
+            resultado = self.comentarios.insert_one({
+                "nombre": nombre,
+                "texto": texto,
+                "fecha": datetime.now().strftime("%d/%m/%Y")
+            })
+            return resultado.inserted_id
+        except Exception as e:
+            print(f"Error al insertar comentario: {e}")
+            return None
+
+    def obtener_todas_sugerencias(self):
+        try:
+            return list(self.sugerencias.find())
+        except Exception as e:
+            print(f"Error al obtener sugerencias: {e}")
+            return []
+
+    def insertar_sugerencia(self, nombre_planta):
+        try:
+            resultado = self.sugerencias.insert_one({
+                "nombre_planta": nombre_planta,
+                "estado": "pendiente"
+            })
+            return resultado.inserted_id
+        except Exception as e:
+            print(f"Error al insertar sugerencia: {e}")
+            return None
+
+    def actualizar_estado_sugerencia(self, sugerencia_id, nuevo_estado):
+        try:
+            resultado = self.sugerencias.update_one(
+                {"_id": ObjectId(sugerencia_id)},
+                {"$set": {"estado": nuevo_estado}}
+            )
+            return resultado.modified_count > 0
+        except Exception as e:
+            print(f"Error al actualizar sugerencia: {e}")
+            return False
+            
+    def buscar_sugerencia_por_id(self, sugerencia_id):
+        try:
+            return self.sugerencias.find_one({"_id": ObjectId(sugerencia_id)})
+        except Exception as e:
+            print(f"Error al buscar sugerencia: {e}")
+            return None
