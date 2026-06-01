@@ -22,7 +22,6 @@ mail = Mail(app)
 db_mongo = Plantas()
 pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
-# ... (Tus otras configuraciones de Flask, Mail y db_mongo arriba)
 
 @app.route('/')
 def index():
@@ -59,10 +58,9 @@ def favorito():
     if planta_id and email_usuario:
         db_mongo.alternar_favorito(email_usuario, planta_id)
         
-    # Regresa automáticamente a la misma página donde estaba el usuario
+    
     return redirect(request.referrer or url_for('index'))
 
-# @app.route('/login', methods=['GET', 'POST']) ... (El resto de tus rutas siguen aquí abajo igual)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -193,6 +191,52 @@ def eliminar_planta(id):
         flash("Error: No se pudo encontrar o eliminar la planta.")
         
     return redirect(url_for('index'))
+
+
+@app.route('/comentarios')
+def comentario():
+    return render_template('comentarios.html')
+
+
+@app.route('/sugerencia', methods=['POST'])
+def sugerencias():
+    nombre = request.form.get('nombre_planta')
+    if nombre:
+        db.sugerencias.insert_one({
+            "nombre_planta": nombre, 
+            "estado": "pendiente"
+        })
+        flash("¡Sugerencia enviada!", "success")
+    return redirect('/comentarios')
+
+#nuevo
+@app.route('/sugerencia/procesar/<id>', methods=['POST'])  # URL más limpia
+def procesar_sugerencia(id):
+    accion = request.form.get('accion') 
+    try:
+        object_id = ObjectId(id)
+    except Exception:
+        flash(" sugerencia inválida.", "error")
+        return redirect('/comentarios')
+
+    if accion == 'aceptar':
+        sugerencia = db.sugerencias.find_one({"_id": object_id})
+        if sugerencia:
+            db.plantas.insert_one({
+                "nombre": sugerencia["nombre_planta"],
+                "descripcion": "Descripción pendiente de actualizar."
+            })
+            db.sugerencias.update_one({"_id": object_id}, {"$set": {"estado": "aprobado"}})
+            flash("¡Aceptada y añadida al catálogo!", "success")
+
+    elif accion == 'rechazar':
+        db.sugerencias.update_one({"_id": object_id}, {"$set": {"estado": "rechazado"}})
+        flash("Sugerencia rechazada.", "info")
+        
+    return redirect('/comentarios')
+
+
+
 
 @app.route("/logout")
 def logout():

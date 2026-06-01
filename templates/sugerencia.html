@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="/sugerencia/{{ sug._id }}" method="POST" style="display:inline;">
+    <input type="hidden" name="accion" value="aceptar">
+    <button type="submit" class="btn btn-success">Aceptar y Publicar</button>
+</form>
+
+<form action="/sugerencia/{{ sug._id }}" method="POST" style="display:inline;">
+    <input type="hidden" name="accion" value="rechazar">
+    <button type="submit" class="btn btn-danger">Rechazar</button>
+</form>
+{% endblock %}
