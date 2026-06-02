@@ -1,39 +1,50 @@
 {% extends "base.html" %}
-
+{% block title %}Mi Invernadero | Sugerencias{% endblock %}
 {% block content %}
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSugerencia">
-  💡 Sugerir una planta
-</button>
+<div class="sugerencia-container">
+  
+  <button type="button" class="btn-sugerencia-trigger" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia" aria-expanded="false" aria-controls="colapsoSugerencia">
+    <span class="icono-sugerencia">💡</span>
+    <span class="texto-sugerencia">Sugerir una planta</span>
+  </button>
 
-<div class="modal fade" id="modalSugerencia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+  <div class="collapse" id="colapsoSugerencia">
+    <div class="tarjeta-sugerencia">
       
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">¿Qué planta nos falta?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="tarjeta-header">
+        <div class="tarjeta-titulo-grupo">
+          <span class="icono-titulo">🌺</span>
+          <h5 class="tarjeta-titulo">¿Qué planta nos falta?</h5>
+        </div>
+        <button type="button" class="btn-cerrar-sugerencia" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia" aria-label="Close">×</button>
       </div>
       
-      <form action="/sugerencia" method="POST">
-        <div class="modal-body">
-          <p class="text-muted">Cuéntanos qué planta te gustaría ver en el catálogo.</p>
+      <div class="tarjeta-body">
+        <p class="descripcion-sugerencia">Ayúdanos a expandir el invernadero. Cuéntanos qué especie te gustaría ver en el catálogo y el administrador la revisará.</p>
+        
+        <form action="/sugerencia" method="POST" class="formulario-sugerencia">
           <input type="hidden" name="accion" value="crear">
           
-          <div class="mb-3">
-            <label for="nombrePlanta" class="form-label">Nombre de la Planta:</label>
-            <input type="text" class="form-control" id="nombrePlanta" name="nombre_planta" placeholder="Ej. Monstera, Girasol..." required>
+          <div class="grupo-input">
+            <input type="text" id="nombrePlanta" name="nombre_planta" placeholder=" " required class="input-sugerencia">
+            <label for="nombrePlanta" class="label-sugerencia">Nombre de la Planta</label>
           </div>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-success">Enviar al Admin</button>
-        </div>
-      </form>
+          
+          <div class="grupo-botones">
+            <button type="button" class="btn-cancelar" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-enviar">
+              Enviar al Admin
+            </button>
+          </div>
+        </form>
+      </div>
 
     </div>
   </div>
-</div>
-{% endblock %}
 
+</div>
+
+{% endblock %}

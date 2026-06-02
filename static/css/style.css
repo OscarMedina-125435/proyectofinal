@@ -1,14 +1,29 @@
-/* Variables de marca extraídas de edited-image.png */
+/* --- Reset y Fondo Global Absoluto --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #fffdf6; /* Forzar el color Marfil en toda la pantalla */
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Variables de marca: Cherry Red + Ivory */
 :root {
-    --envia-magenta: #9b005d; /* Color principal de la cabecera */
+    --envia-cherry: #9b1b30;       /* Rojo Cereza principal */
+    --envia-cherry-dark: #721222;  /* Cereza oscuro para hovers */
+    --envia-ivory: #fffdf6;        /* Marfil suave para fondos principales */
+    --envia-ivory-dark: #f4efe3;   /* Marfil oscuro para contenedores y bordes */
     --envia-white: #ffffff;
+    --envia-charcoal: #3a3335;     /* Texto oscuro cálido */
+    --envia-charcoal-muted: #6c757d; /* Texto secundario grisáceo */
 }
 
 /* Estilos de la Barra de Navegación */
 .navbar-envia {
-    background-color: var(--envia-magenta) !important;
+    background-color: var(--envia-cherry) !important;
     padding: 0.6rem 2rem;
     min-height: 64px;
+    box-shadow: 0 2px 10px rgba(155, 27, 48, 0.15);
 }
 
 /* Logo y Tipografía */
@@ -52,10 +67,14 @@
     transform: scale(1.1);
 }
 
-/* Ajuste para que el contenedor de Jinja no quede pegado al nav */
+/* Contenedor principal de Jinja */
 .main-layout-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
+    background-color: var(--envia-ivory); 
+    /* min-height asegura que si hay poco contenido, siga expandiéndose */
+    min-height: calc(100vh - 64px); 
+    box-sizing: border-box;
 }
 
 
@@ -67,25 +86,27 @@
 
 .catalog-title {
     font-weight: 700;
-    color: #ec3333;
+    color: var(--envia-cherry);
 }
 
 .catalog-subtitle {
-    color: #6c757d;
+    color: var(--envia-charcoal);
+    opacity: 0.8;
 }
 
 /* Tarjetas de Flores */
 .flower-card {
-    border: none !important;
+    border: 1px solid var(--envia-ivory-dark) !important;
+    background-color: var(--envia-white);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(58, 51, 53, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .flower-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 20px rgba(155, 27, 48, 0.12);
 }
 
 .flower-img {
@@ -97,11 +118,13 @@
     font-size: 1.1rem;
     margin-bottom: 0.25rem;
     font-weight: 600;
+    color: var(--envia-charcoal);
 }
 
 .flower-description {
     font-size: 0.85rem;
-    color: #6c757d;
+    color: var(--envia-charcoal);
+    opacity: 0.7;
 }
 
 .flower-footer {
@@ -114,52 +137,229 @@
 .flower-price {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--envia-magenta); /* Usa la variable definida antes */
+    color: var(--envia-cherry);
 }
 
 .btn-add {
-    color: var(--envia-magenta);
-    border: 1px solid var(--envia-magenta);
+    color: var(--envia-cherry);
+    border: 1px solid var(--envia-cherry);
     padding: 0.25rem 0.75rem;
     font-size: 0.9rem;
     background-color: transparent;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-add:hover {
-    background-color: var(--envia-magenta);
-    color: white;
+    background-color: var(--envia-cherry);
+    color: var(--envia-white);
 }
 
-/* Estilos con colores puros para Recuperar Contraseña */
+
+/* --- Estilos para Recuperar Contraseña --- */
+
 .recuperar-container {
-    min-height: 75vh;
+    min-height: calc(100vh - 64px); 
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff; /* Fondo blanco puro */
+    background-color: var(--envia-ivory); 
+    box-sizing: border-box;
 }
 
 .card-recuperar {
     max-width: 400px;
     width: 100%;
-    border: 2px solid #6c757d; /* Borde gris sólido */
-    background-color: #f8f9fa; /* Fondo gris claro plano */
+    border: 1px solid var(--envia-ivory-dark);
+    background-color: var(--envia-white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+
+/* --- Estilos Nuevos: Sección de Sugerencia de Plantas --- */
+
+.sugerencia-container {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Botón principal adaptado al estilo Cherry de la marca */
+.btn-sugerencia-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background-color: var(--envia-cherry);
+    color: var(--envia-white);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(155, 27, 48, 0.15);
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease;
+}
+
+.btn-sugerencia-trigger:hover {
+    background-color: var(--envia-cherry-dark);
+    transform: translateY(-2px);
+}
+
+.icono-sugerencia {
+    font-size: 1.2rem;
+}
+
+/* Tarjeta contenedora adaptada a las esquinas redondeadas de tu diseño */
+.tarjeta-sugerencia {
+    max-width: 550px;
+    margin-top: 1.5rem;
+    background-color: var(--envia-white);
+    border: 1px solid var(--envia-ivory-dark);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado de la tarjeta con tono marfil oscuro */
+.tarjeta-header {
+    background-color: var(--envia-ivory-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+}
+
+.tarjeta-titulo-grupo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.icono-titulo {
+    font-size: 1.3rem;
+}
+
+.tarjeta-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--envia-cherry);
+    margin: 0;
+}
+
+/* Botón "X" para colapsar */
+.btn-cerrar-sugerencia {
+    background: var(--envia-white);
+    border: 1px solid var(--envia-ivory-dark);
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--envia-charcoal-muted);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.btn-cerrar-sugerencia:hover {
+    background-color: var(--envia-ivory);
+    color: var(--envia-charcoal);
+}
+
+/* Cuerpo del Formulario */
+.tarjeta-body {
     padding: 1.5rem;
 }
 
+.descripcion-sugerencia {
+    color: var(--envia-charcoal);
+    opacity: 0.8;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+/* Efecto Input Flotante Moderno */
+.grupo-input {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-sugerencia {
+    width: 100%;
+    padding: 1rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--envia-ivory-dark);
+    background-color: var(--envia-white);
+    color: var(--envia-charcoal);
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.input-sugerencia:focus {
+    border-color: var(--envia-cherry);
+}
+
+.label-sugerencia {
+    position: absolute;
+    left: 0.75rem;
+    top: 1rem;
+    color: var(--envia-charcoal-muted);
+    transition: all 0.2s ease;
+    pointer-events: none;
+    background-color: var(--envia-white);
+    padding: 0 0.25rem;
+}
+
+/* Comportamiento del input flotante */
+.input-sugerencia:focus ~ .label-sugerencia,
+.input-sugerencia:not(:placeholder-shown) ~ .label-sugerencia {
+    top: -0.5rem;
+    left: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--envia-cherry);
+    font-weight: 600;
+}
+
+/* Botones inferiores */
+.grupo-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-cancelar {
+    background-color: var(--envia-white);
+    color: var(--envia-charcoal);
+    border: 1px solid var(--envia-ivory-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+    background-color: var(--envia-ivory-dark);
+}
+
 .btn-enviar {
-    background-color: #800040; /* Color morado plano */
-    color: #ffffff;            /* Texto blanco */
-    font-weight: bold;
-    padding: 0.6rem;
+    background-color: var(--envia-cherry);
+    color: var(--envia-white);
     border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
 .btn-enviar:hover {
-    background-color: #59002c; /* Morado más oscuro plano para el hover */
-    color: #ffffff;
-}
-
-.text-link-back {
-    color: #800040; /* Enlace del mismo color de la marca */
+    background-color: var(--envia-cherry-dark);
 }

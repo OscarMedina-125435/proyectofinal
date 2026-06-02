@@ -8,18 +8,18 @@
     <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
     
     <div class="d-flex align-items-center gap-3">
-        <form class="d-flex" role="search" action="/" method="GET">
+      <form class="d-flex" role="search" action="/" method="GET">
         <input class="form-control me-2" type="search" name="q" placeholder="Buscar planta..." aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Buscar</button>
-    </form>
-    <button class="btn btn-outline-danger position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
-        ❤️ Favoritos 
+        <button class="btn btn-outline-danger" type="submit">Buscar</button>
+      </form>
+   
+      <button class="btn btn-outline-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
+        🤍 Favoritos
       </button>
-      <a href="/comentarios" class="btn btn-outline-danger fw-bold" style="color: #bc2c74; border-color: #bc2c74;">
-    Sugerencias
-</a>
- 
-</nav>
+
+      <a href="{{ url_for('comentario') }}" class="btn btn-outline-danger fw-bold">
+        Sugerencias
+      </a>
     </div>
   </div>
 </nav>
@@ -33,7 +33,7 @@
 {% endif %}
 
 <section class="catalog-header text-center mb-5">
-    <h2 class="catalog-title fw-bold">𝘗𝘭𝘢𝘯𝘵𝘢𝘴 𝘋𝘪𝘴𝘱𝘰𝘯𝘪𝘣𝘭𝘦𝘴 🌺</h2>
+    <h2 class="catalog-title fw-bold">Plantas Disponibles 🌺</h2>
     <p class="catalog-subtitle text-muted">Cuidados personalizados para cada especie.</p>
 </section>
 
@@ -62,14 +62,14 @@
             </div>
 
             <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center pb-3">
-                <button class="btn btn-link p-0 text-decoration-none small" data-bs-toggle="collapse" data-bs-target="{{ planta._id }}">
+                <button class="btn btn-link p-0 text-decoration-none small" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
                     ℹ️ Cuidados
                 </button>
                 
                 <div class="d-flex align-items-center gap-2">
                     {% if administrador %}
                     <a href="{{ url_for('editar_planta', id=planta._id|string) }}"
-                    class="btn btn-sm btn-outline-warning"
+                    class="btn btn-sm btn-outline-danger"
                     title="Editar planta">✏️</a>
 
                     <a href="{{ url_for('eliminar_planta', id=planta._id) }}" 
@@ -81,9 +81,9 @@
                         <input type="hidden" name="planta_id" value="{{ planta._id|string }}">
                     
                         {% if planta._id|string in lista_ids_favoritos %}
-                        <button type="submit" class="btn btn-sm btn-danger shadow-sm">❤️</button>
+                        <button type="submit" class="btn btn-sm btn-danger shadow-sm">🤍</button>
                         {% else %}
-                        <button type="submit" class="btn btn-sm btn-outline-danger">🖤</button>
+                        <button type="submit" class="btn btn-sm btn-outline-danger">❤️</button>
                         {% endif %}
                     </form>
                 </div>
@@ -135,7 +135,7 @@
         {% else %}
             <div class="text-center py-5">
                 <i class="bi bi-heartbreak text-muted display-4 mb-3 d-block"></i>
-                <p class="text-muted fw-medium">Aun no tienes plantas favoritas.</p>
+                <p class="text-muted fw-medium">Aún no tienes plantas favoritas.</p>
                 <p class="small text-muted px-3">Pulsa el corazón de tus plantas preferidas para verlas aquí.</p>
             </div>
         {% endif %}

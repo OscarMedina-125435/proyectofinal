@@ -232,38 +232,44 @@ def comentario():
 def sugerencias():
     nombre = request.form.get('nombre_planta')
     if nombre:
-        db.sugerencias.insert_one({
-            "nombre_planta": nombre, 
-            "estado": "pendiente"
-        })
+        # Usamos el método correcto de tu clase asignado a db_mongo
+        db_mongo.insertar_sugerencia(nombre)
         flash("¡Sugerencia enviada!", "success")
     return redirect('/comentarios')
 
 @app.route('/sugerencia/procesar/<id>', methods=['POST']) 
 def procesar_sugerencia(id):
     accion = request.form.get('accion') 
-    try:
-        object_id = ObjectId(id)
-    except Exception:
-        flash(" sugerencia inválida.", "error")
+    
+    # Intentamos buscar la sugerencia usando el método de tu clase plantas.py
+    sugerencia = db_mongo.buscar_sugerencia_por_id(id)
+    
+    if not sugerencia:
+        flash("Sugerencia inválida o no encontrada.", "error")
         return redirect('/comentarios')
 
     if accion == 'aceptar':
-        sugerencia = db.sugerencias.find_one({"_id": object_id})
-        if sugerencia:
-            db.plantas.insert_one({
-                "nombre": sugerencia["nombre_planta"],
-                "descripcion": "Descripción pendiente de actualizar."
-            })
-            db.sugerencias.update_one({"_id": object_id}, {"$set": {"estado": "aprobado"}})
-            flash("¡Aceptada y añadida al catálogo!", "success")
+        # 1. Insertamos la planta en el catálogo usando tu método insertar_planta
+        nueva_planta = {
+            "nombre": sugerencia["nombre_planta"],
+            "descripcion": "Descripción pendiente de actualizar.",
+            "imagen": "",
+            "dificultad": "Media",
+            "riego": "Moderado",
+            "frecuencia": "Semanal"
+        }
+        db_mongo.insertar_planta(nueva_planta)
+        
+        # 2. Actualizamos el estado de la sugerencia usando tu método
+        db_mongo.actualizar_estado_sugerencia(id, "aprobado")
+        flash("¡Aceptada y añadida al catálogo!", "success")
 
     elif accion == 'rechazar':
-        db.sugerencias.update_one({"_id": object_id}, {"$set": {"estado": "rechazado"}})
+        # 3. Actualizamos el estado a rechazado usando tu método
+        db_mongo.actualizar_estado_sugerencia(id, "rechazado")
         flash("Sugerencia rechazada.", "info")
         
     return redirect('/comentarios')
-
 
 
 
