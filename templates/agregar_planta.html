@@ -12,7 +12,14 @@
                     <form action="/agregar_planta" method="POST">
                         <div class="mb-3">
                             <label class="form-label">Nombre de la planta</label>
-                            <input type="text" name="nombre" class="form-control" placeholder="Ej. Gerbera" required>
+                            <input
+    type="text"
+    name="nombre"
+    class="form-control"
+    placeholder="Ej. Gerbera"
+    value="{{ nombre_sugerido }}"
+    required
+>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>

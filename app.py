@@ -154,7 +154,7 @@ def nueva_contrasena():
 @app.route('/agregar_planta', methods=['GET', 'POST'])
 def agregar_planta():
     if not session.get('administrador'):
-        flash( "Denegado","danger")
+        flash("Denegado", "danger")
         return redirect(url_for('index'))
 
     if request.method == 'POST':
@@ -166,12 +166,17 @@ def agregar_planta():
             "riego": request.form.get('riego'),
             "frecuencia": request.form.get('frecuencia')
         }
-        
+
         db_mongo.insertar_planta(nueva_planta)
-        flash("¡Planta añadida con éxito!", "success")
+        flash("¡Planta añadida !", "success")
         return redirect(url_for('index'))
 
-    return render_template('agregar_planta.html')
+    nombre_sugerido = request.args.get('nombre', '')
+
+    return render_template(
+        'agregar_planta.html',
+        nombre_sugerido=nombre_sugerido
+    )
 
 @app.route('/eliminar_planta/<id>')
 def eliminar_planta(id):
@@ -231,45 +236,51 @@ def comentario():
 @app.route('/sugerencia', methods=['POST'])
 def sugerencias():
     nombre = request.form.get('nombre_planta')
-    if nombre:
-        # Usamos el método correcto de tu clase asignado a db_mongo
+    if nombre:  
         db_mongo.insertar_sugerencia(nombre)
         flash("¡Sugerencia enviada!", "success")
     return redirect('/comentarios')
 
-@app.route('/sugerencia/procesar/<id>', methods=['POST']) 
+@app.route('/sugerencia/procesar/<id>', methods=['POST'])
 def procesar_sugerencia(id):
-    accion = request.form.get('accion') 
-    
-    # Intentamos buscar la sugerencia usando el método de tu clase plantas.py
+    accion = request.form.get('accion')
     sugerencia = db_mongo.buscar_sugerencia_por_id(id)
-    
+
     if not sugerencia:
         flash("Sugerencia inválida o no encontrada.", "error")
         return redirect('/comentarios')
 
     if accion == 'aceptar':
-        # 1. Insertamos la planta en el catálogo usando tu método insertar_planta
-        nueva_planta = {
-            "nombre": sugerencia["nombre_planta"],
-            "descripcion": "Descripción pendiente de actualizar.",
-            "imagen": "",
-            "dificultad": "Media",
-            "riego": "Moderado",
-            "frecuencia": "Semanal"
-        }
-        db_mongo.insertar_planta(nueva_planta)
-        
-        # 2. Actualizamos el estado de la sugerencia usando tu método
         db_mongo.actualizar_estado_sugerencia(id, "aprobado")
-        flash("¡Aceptada y añadida al catálogo!", "success")
+
+        flash("Completa la información de la planta.", "success")
+
+        return redirect(
+            url_for(
+                'agregar_planta',
+                nombre=sugerencia["nombre_planta"]
+            )
+        )
 
     elif accion == 'rechazar':
-        # 3. Actualizamos el estado a rechazado usando tu método
         db_mongo.actualizar_estado_sugerencia(id, "rechazado")
         flash("Sugerencia rechazada.", "info")
-        
+
     return redirect('/comentarios')
+   
+
+@app.route('/sugerencias')
+def ver_sugerencias():
+
+    if not session.get('administrador'):
+        return redirect('/')
+
+    sugerencias = db_mongo.obtener_todas_sugerencias()
+
+    return render_template(
+        'sugerencia.html',
+        sugerencias=sugerencias
+    )
 
 
 

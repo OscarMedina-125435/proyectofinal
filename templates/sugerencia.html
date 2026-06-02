@@ -2,13 +2,79 @@
 
 {% block content %}
 
-<form action="/sugerencia/{{ sug._id }}" method="POST" style="display:inline;">
-    <input type="hidden" name="accion" value="aceptar">
-    <button type="submit" class="btn btn-success">Aceptar y Publicar</button>
-</form>
+<div class="container mt-4">
 
-<form action="/sugerencia/{{ sug._id }}" method="POST" style="display:inline;">
-    <input type="hidden" name="accion" value="rechazar">
-    <button type="submit" class="btn btn-danger">Rechazar</button>
-</form>
+    <h2 class="mb-4 text-center">Sugerencias de Usuarios</h2>
+
+    <p class="text-muted text-center">
+        Total de sugerencias: {{ sugerencias|length }}
+    </p>
+
+    <div class="row">
+
+        {% for sug in sugerencias %}
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-secondary-subtle text-black">
+                    🌱 Planta sugerida
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ sug.nombre_planta }}
+                    </h5>
+
+                    <p class="card-text">
+                        <strong>Estado:</strong>
+
+                        {% if sug.estado == "pendiente" %}
+                            <span class="badge bg-warning text-dark">
+                                Pendiente
+                            </span>
+
+                        {% elif sug.estado == "aprobado" %}
+                            <span class="badge bg-success">
+                                Aprobado
+                            </span>
+
+                        {% elif sug.estado == "rechazado" %}
+                            <span class="badge bg-danger">
+                                Rechazado
+                            </span>
+
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+
+                    <form action="/sugerencia/procesar/{{ sug._id }}" method="POST">
+                        <input type="hidden" name="accion" value="aceptar">
+
+                        <button type="submit" class="btn btn-success btn-sm">
+                            ✔ Aceptar
+                        </button>
+                    </form>
+
+                    <form action="/sugerencia/procesar/{{ sug._id }}" method="POST">
+                        <input type="hidden" name="accion" value="rechazar">
+
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            ✖ Rechazar
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
 {% endblock %}

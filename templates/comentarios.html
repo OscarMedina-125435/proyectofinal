@@ -2,6 +2,18 @@
 {% block title %}Mi Invernadero | Sugerencias{% endblock %}
 {% block content %}
 
+{% if session.get('administrador') %}
+
+<div class="container mt-4">
+    <h2>Panel de Administrador</h2>
+
+    <a href="{{ url_for('ver_sugerencias') }}" class="btn btn-primary">
+        Ver sugerencias pendientes
+    </a>
+</div>
+
+{% else %}
+
 <div class="sugerencia-container">
   
   <button type="button" class="btn-sugerencia-trigger" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia" aria-expanded="false" aria-controls="colapsoSugerencia">
@@ -21,7 +33,9 @@
       </div>
       
       <div class="tarjeta-body">
-        <p class="descripcion-sugerencia">Ayúdanos a expandir el invernadero. Cuéntanos qué especie te gustaría ver en el catálogo y el administrador la revisará.</p>
+        <p class="descripcion-sugerencia">
+          Ayúdanos a expandir el invernadero. Cuéntanos qué especie te gustaría ver en el catálogo y el administrador la revisará.
+        </p>
         
         <form action="/sugerencia" method="POST" class="formulario-sugerencia">
           <input type="hidden" name="accion" value="crear">
@@ -46,5 +60,7 @@
   </div>
 
 </div>
+
+{% endif %}
 
 {% endblock %}
