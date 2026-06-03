@@ -151,6 +151,8 @@ def nueva_contrasena():
             
     return render_template('nueva_contrasena.html')
 
+
+
 @app.route('/agregar_planta', methods=['GET', 'POST'])
 def agregar_planta():
     if not session.get('administrador'):
@@ -164,50 +166,37 @@ def agregar_planta():
             "imagen": request.form.get('imagen'),
             "dificultad": request.form.get('dificultad'),
             "riego": request.form.get('riego'),
-            "frecuencia": request.form.get('frecuencia')
+            "frecuencia": request.form.get('frecuencia'),
+            "luz": request.form.get('luz'),                
+            "notas_riego": request.form.get('notas_riego')  
         }
 
         db_mongo.insertar_planta(nueva_planta)
-        flash("¡Planta añadida !", "success")
+        flash("¡Planta añadida exitosamente!", "success")
         return redirect(url_for('index'))
 
     nombre_sugerido = request.args.get('nombre', '')
-
-    return render_template(
-        'agregar_planta.html',
-        nombre_sugerido=nombre_sugerido
-    )
+    return render_template('agregar_planta.html', nombre_sugerido=nombre_sugerido)
 
 @app.route('/eliminar_planta/<id>')
 def eliminar_planta(id):
-    
     if not session.get('administrador'):
-        flash("Acceso denegado: Se requieren permisos de administrador.")
+        flash("Acceso denegado: Se requieren permisos de administrador.", "danger")
         return redirect(url_for('index'))
 
     if db_mongo.eliminar_planta(id):
-        flash("La planta ha sido eliminada del sistema.")
+        flash("La planta ha sido eliminada del sistema.", "success")
     else:
-        flash("Error: No se pudo encontrar o eliminar la planta.")
+        flash("Error: No se pudo encontrar o eliminar la planta.", "danger")
         
     return redirect(url_for('index'))
 
+
 @app.route('/editar_planta/<id>', methods=['GET', 'POST'])
 def editar_planta(id):
-    
-    variables_globales = globals()
-    instancia_plantas = None
-    
-    for nombre_var, valor in variables_globales.items():
-        if valor.__class__.__name__ == 'Plantas':
-            instancia_plantas = valor
-            break
-
-    if not instancia_plantas:
-        if 'plantas' in variables_globales:
-            instancia_plantas = variables_globales['plantas']
-        else:
-            return "Error: No se encontró la conexión a la base de datos en app.py", 500
+    if not session.get('administrador'):
+        flash("Acceso denegado.", "danger")
+        return redirect(url_for('index'))
 
     if request.method == 'POST':
         datos_actualizados = {
@@ -216,17 +205,22 @@ def editar_planta(id):
             "imagen": request.form.get('imagen'),
             "dificultad": request.form.get('dificultad'),
             "frecuencia": request.form.get('frecuencia'),
-            "riego": request.form.get('riego')
+            "riego": request.form.get('riego'),
+            "luz": request.form.get('luz'),                
+            "notas_riego": request.form.get('notas_riego')  
         }
 
-        instancia_plantas.actualizar_planta(id, datos_actualizados)
+        db_mongo.actualizar_planta(id, datos_actualizados)
+        flash("Planta actualizada correctamente.", "success")
         return redirect(url_for('index')) 
 
-    planta_encontrada = instancia_plantas.obtener_planta_por_id(id)
+    # Usamos db_mongo directamente sin el bucle for raro de antes
+    planta_encontrada = db_mongo.obtener_planta_por_id(id)
     if not planta_encontrada:
         return "La planta que intentas editar no existe.", 404
         
     return render_template('editar_planta.html', planta=planta_encontrada)
+
 
 @app.route('/comentarios')
 def comentario():
@@ -234,55 +228,50 @@ def comentario():
 
 
 @app.route('/sugerencia', methods=['POST'])
-def sugerencias():
-    nombre = request.form.get('nombre_planta')
+def sugerencia_post():  # Le cambié el nombre a la función para que no choque
+    # Buscamos tanto 'planta' como 'nombre_planta' por si acaso
+    nombre = request.form.get('planta') or request.form.get('nombre_planta')
+    
     if nombre:  
         db_mongo.insertar_sugerencia(nombre)
-        flash("¡Sugerencia enviada!", "success")
-    return redirect('/comentarios')
+        flash("¡Sugerencia enviada al administrador!", "success")
+    
+    # Redirige al index automáticamente como querías al final
+    return redirect(url_for('index'))
+
 
 @app.route('/sugerencia/procesar/<id>', methods=['POST'])
 def procesar_sugerencia(id):
+    if not session.get('administrador'):
+        return redirect(url_for('index'))
+
     accion = request.form.get('accion')
     sugerencia = db_mongo.buscar_sugerencia_por_id(id)
 
     if not sugerencia:
-        flash("Sugerencia inválida o no encontrada.", "error")
-        return redirect('/comentarios')
+        flash("Sugerencia inválida o no encontrada.", "danger")
+        return redirect(url_for('ver_sugerencias'))
 
     if accion == 'aceptar':
         db_mongo.actualizar_estado_sugerencia(id, "aprobado")
-
         flash("Completa la información de la planta.", "success")
-
-        return redirect(
-            url_for(
-                'agregar_planta',
-                nombre=sugerencia["nombre_planta"]
-            )
-        )
+        # Te manda al formulario mandando el nombre sugerido
+        return redirect(url_for('agregar_planta', nombre=sugerencia.get("nombre_planta") or sugerencia.get("nombre")))
 
     elif accion == 'rechazar':
         db_mongo.actualizar_estado_sugerencia(id, "rechazado")
         flash("Sugerencia rechazada.", "info")
 
-    return redirect('/comentarios')
-   
+    return redirect(url_for('ver_sugerencias'))
+     
 
 @app.route('/sugerencias')
 def ver_sugerencias():
-
     if not session.get('administrador'):
-        return redirect('/')
+        return redirect(url_for('index'))
 
-    sugerencias = db_mongo.obtener_todas_sugerencias()
-
-    return render_template(
-        'sugerencia.html',
-        sugerencias=sugerencias
-    )
-
-
+    sugerencias_db = db_mongo.obtener_todas_sugerencias()
+    return render_template('sugerencia.html', sugerencias=sugerencias_db)
 
 @app.route("/logout")
 def logout():

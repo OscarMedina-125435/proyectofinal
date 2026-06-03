@@ -9,7 +9,7 @@ class Plantas:
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
             self.cliente.admin.command('ping')
             
-            self.db = self.cliente['plantas']
+            self.db = self.cliente['BienvenidaPlantas']
             self.usuarios = self.db['usuarios']
             self.coleccion_plantas = self.db['plantas'] 
             self.comentarios = self.db['comentarios']
@@ -20,7 +20,6 @@ class Plantas:
         except ConnectionFailure:
             print("❌ Error: No se pudo conectar a MongoDB Atlas")
             raise
-    
     
     def crear_usuario(self, nombre, email, password):
         try:
@@ -54,9 +53,7 @@ class Plantas:
         except Exception as e:
             return False
 
-
     def obtener_plantas(self, filtro_nombre=None):
-        """Busca plantas. Si hay filtro, usa regex; si no, trae todas."""
         try:
             if filtro_nombre:
                 return list(self.coleccion_plantas.find({
@@ -68,7 +65,6 @@ class Plantas:
             return []
 
     def insertar_planta(self, datos_planta):
-        """Guarda una nueva planta en la colección."""
         try:
             resultado = self.coleccion_plantas.insert_one(datos_planta)
             return resultado.inserted_id
@@ -78,8 +74,6 @@ class Plantas:
         
     def eliminar_planta(self, planta_id):
         try:
-            from bson.objectid import ObjectId
-            
             resultado = self.coleccion_plantas.delete_one({"_id": ObjectId(planta_id)})
             return resultado.deleted_count > 0
         except Exception as e:
@@ -87,7 +81,6 @@ class Plantas:
             return False
 
     def alternar_favorito(self, email_usuario, planta_id):
-        """Agrega o quita una planta de los favoritos del usuario (Toggle)."""
         try:
             usuario = self.buscar_usuario(email_usuario)
             if not usuario:
@@ -111,28 +104,34 @@ class Plantas:
             return False
 
     def obtener_favoritos_usuario(self, email_usuario):
-        """Devuelve los documentos completos de las plantas favoritas del usuario."""
         try:
             usuario = self.buscar_usuario(email_usuario)
-            if not usuario or 'favoritos' not in usuario:
+            if not usuario or 'favoritos' not in usuario or not usuario['favoritos']:
                 return []
             
-            ids_plantas = [ObjectId(pid) for pid in usuario['favoritos']]
+            ids_plantas = []
+            for pid in usuario['favoritos']:
+                if ObjectId.is_valid(pid):
+                    ids_plantas.append(ObjectId(pid))
+            
+            if not ids_plantas:
+                return []
+
             return list(self.coleccion_plantas.find({"_id": {"$in": ids_plantas}}))
         except Exception as e:
             print(f"Error al obtener favoritos: {e}")
             return []
         
     def obtener_planta_por_id(self, planta_id):
-        """Busca una sola planta por su ObjectId."""
         try:
+            if not ObjectId.is_valid(planta_id):
+                return None
             return self.coleccion_plantas.find_one({"_id": ObjectId(planta_id)})
         except Exception as e:
             print(f"Error al obtener planta por ID: {e}")
             return None
 
     def actualizar_planta(self, planta_id, nuevos_datos):
-        """Actualiza los datos de una planta existente."""
         try:
             resultado = self.coleccion_plantas.update_one(
                 {"_id": ObjectId(planta_id)},
@@ -193,6 +192,8 @@ class Plantas:
             
     def buscar_sugerencia_por_id(self, sugerencia_id):
         try:
+            if not ObjectId.is_valid(sugerencia_id):
+                return None
             return self.sugerencias.find_one({"_id": ObjectId(sugerencia_id)})
         except Exception as e:
             print(f"Error al buscar sugerencia: {e}")

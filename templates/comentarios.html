@@ -4,63 +4,62 @@
 
 {% if session.get('administrador') %}
 
-<div class="container mt-4">
-    <h2>Panel de Administrador</h2>
-
-    <a href="{{ url_for('ver_sugerencias') }}" class="btn btn-primary">
-        Ver sugerencias pendientes
+<div class="container mt-5 text-center">
+    
+    <h1 class="fw-bold mb-2"> Administrador</h1>
+    <p class="text-muted mb-5">Revisar las sugerencias.</p>
+    
+    <a href="{{ url_for('ver_sugerencias') }}" class="btn btn-danger btn-lg  shadow-sm">
+        Pendientes
     </a>
 </div>
-
 {% else %}
 
-<div class="sugerencia-container">
-  
-  <button type="button" class="btn-sugerencia-trigger" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia" aria-expanded="false" aria-controls="colapsoSugerencia">
-    <span class="icono-sugerencia">💡</span>
-    <span class="texto-sugerencia">Sugerir una planta</span>
-  </button>
 
-  <div class="collapse" id="colapsoSugerencia">
-    <div class="tarjeta-sugerencia">
-      
-      <div class="tarjeta-header">
-        <div class="tarjeta-titulo-grupo">
-          <span class="icono-titulo">🌺</span>
-          <h5 class="tarjeta-titulo">¿Qué planta nos falta?</h5>
-        </div>
-        <button type="button" class="btn-cerrar-sugerencia" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia" aria-label="Close">×</button>
-      </div>
-      
-      <div class="tarjeta-body">
-        <p class="descripcion-sugerencia">
-          Ayúdanos a expandir el invernadero. Cuéntanos qué especie te gustaría ver en el catálogo y el administrador la revisará.
-        </p>
-        
-        <form action="/sugerencia" method="POST" class="formulario-sugerencia">
-          <input type="hidden" name="accion" value="crear">
-          
-          <div class="grupo-input">
-            <input type="text" id="nombrePlanta" name="nombre_planta" placeholder=" " required class="input-sugerencia">
-            <label for="nombrePlanta" class="label-sugerencia">Nombre de la Planta</label>
-          </div>
-          
-          <div class="grupo-botones">
-            <button type="button" class="btn-cancelar" data-bs-toggle="collapse" data-bs-target="#colapsoSugerencia">
-              Cancelar
-            </button>
-            <button type="submit" class="btn-enviar">
-              Enviar al Admin
-            </button>
-          </div>
-        </form>
-      </div>
-
-    </div>
-  </div>
-
+<div class="container mt-5 text-center">
+    <h4 class="fw-bold mb-4 text-dark">
+        Holaa, si gustas encontrar una planta pero no está en el catálogo, te recomiendo que comentes qué planta te gustaría ver y nosotros nos encargamos de revisarla 💗
+    </h4>
 </div>
 
+<div class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-7">
+      
+      <div class="card shadow-sm rounded border-0 p-2 bg-white">
+        
+        <div class="card-header bg-white border-0 d-flex align-items-center gap-2 pt-3 ps-3">
+          <span class="fs-4">🌺</span>
+          <h4 class="card-title mb-0 fw-bold text-dark">¿Qué planta nos falta?</h4>
+        </div>
+        
+        <div class="card-body p-4">
+          <p class="card-text text-muted mb-4 fs-5">
+            Ayúdanos a expandir. Cuéntanos qué especie te gustaría ver en el catálogo y lo revisaremos
+          </p>
+
+          <form action="{{ url_for('sugerencias') }}" method="POST">
+            <div class="mb-4 text-start">
+              <label for="nombrePlanta" class="form-label fw-semibold text-secondary fs-5">Nombre de la planta:</label>
+              <input type="text" class="form-control form-control-lg bg-light py-3" id="nombrePlanta" name="planta" placeholder="Ej. Peonía, Lirio, Girasol..." required>
+            </div>
+            
+          <div class="d-flex gap-2">
+  <button type="submit" class="btn btn-success flex-grow-1 btn-lg py-3 shadow-sm fw-bold">
+    <i class="bi bi-send me-2"></i> Enviar Sugerencia
+  </button>
+  
+  <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg py-3 px-4 shadow-sm">
+    Volver
+  </a>
+</div>
+        </div>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
 {% endif %}
 
 {% endblock %}

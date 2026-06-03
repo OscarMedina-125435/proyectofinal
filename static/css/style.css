@@ -9,8 +9,8 @@ html, body {
 
 /* Variables de marca: Cherry Red + Ivory */
 :root {
-    --envia-cherry: #9b1b30;       /* Rojo Cereza principal */
-    --envia-cherry-dark: #721222;  /* Cereza oscuro para hovers */
+    --envia-cherry: #9B111E;       /* Rojo Cereza principal */
+    --envia-cherry-dark: #9B111E;  /* Cereza oscuro para hovers */
     --envia-ivory: #fffdf6;        /* Marfil suave para fondos principales */
     --envia-ivory-dark: #f4efe3;   /* Marfil oscuro para contenedores y bordes */
     --envia-white: #ffffff;

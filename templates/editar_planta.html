@@ -4,45 +4,67 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary-subtle text-black rounded-0">
-                    <h4 class="mb-0">Editar Planta: {{ planta.nombre }}</h4>
+            <div class="card shadow border-0 rounded-3 mb-5">
+                <div class="card-header bg-danger-subtle text-black py-3">
+                    <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i>Editar Planta: {{ planta.nombre }}</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form action="{{ url_for('editar_planta', id=planta._id|string) }}" method="POST">
+                        
                         <div class="mb-3">
-                            <label class="form-label">Nombre de la planta</label>
-                            <input type="text" name="nombre" class="form-control" value="{{ planta.nombre }}" required>
+                            <label class="form-label fw-semibold text-secondary">Nombre de la planta</label>
+                            <input type="text" name="nombre" class="form-control form-control-lg" value="{{ planta.nombre }}" required>
                         </div>
+                        
                         <div class="mb-3">
-                            <label class="form-label">Descripción</label>
+                            <label class="form-label fw-semibold text-secondary">Descripción General</label>
                             <textarea name="descripcion" class="form-control" rows="3" required>{{ planta.descripcion }}</textarea>
                         </div>
+                        
                         <div class="mb-3">
-                            <label class="form-label">Nombre de la imagen (ej: tulipanes.jpg)</label>
-                            <input type="text" name="imagen" class="form-control" value="{{ planta.imagen }}" required>
+                            <label class="form-label fw-semibold text-secondary">Nombre del archivo de imagen</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-secondary"><i class="bi bi-image"></i></span>
+                                <input type="text" name="imagen" class="form-control" value="{{ planta.imagen }}" required>
+                            </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Dificultad</label>
+                                <label class="form-label fw-semibold text-secondary">Dificultad de Cuidado</label>
                                 <select name="dificultad" class="form-select">
-                                    <option value="Baja" {% if planta.dificultad == 'Baja' %}selected{% endif %}>Baja</option>
-                                    <option value="Media" {% if planta.dificultad == 'Media' %}selected{% endif %}>Media</option>
-                                    <option value="Alta" {% if planta.dificultad == 'Alta' %}selected{% endif %}>Alta</option>
+                                    <option value="Baja" {% if planta.dificultad == 'Baja' %}selected{% endif %}>Baja (Ideal para principiantes)</option>
+                                    <option value="Media" {% if planta.dificultad == 'Media' %}selected{% endif %}>Media (Requiere algo de atención)</option>
+                                    <option value="Alta" {% if planta.dificultad == 'Alta' %}selected{% endif %}>Alta (Para expertos)</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Frecuencia de riego</label>
-                                <input type="text" name="frecuencia" class="form-control" value="{{ planta.frecuencia }}" required>
+                                <label class="form-label fw-semibold text-secondary">Requisitos de Luz e Invernadero</label>
+                                <input type="text" name="luz" class="form-control" value="{{ planta.luz }}" placeholder="Ej. Sombra parcial o interiores muy iluminados" required>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Detalles del Riego</label>
-                            <input type="text" name="riego" class="form-control" value="{{ planta.riego }}" required>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold text-secondary">Frecuencia de riego</label>
+                                <input type="text" name="frecuencia" class="form-control" value="{{ planta.frecuencia }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold text-secondary">Cantidad exacta de agua</label>
+                                <input type="text" name="riego" class="form-control" value="{{ planta.riego }}" required>
+                            </div>
                         </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary">Notas de riego para temporadas (Invierno/Verano)</label>
+                            <input type="text" name="notas_riego" class="form-control" value="{{ planta.notas_riego }}" placeholder="Ej. Reducir el riego en invierno" required>
+                        </div>
+                        
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Actualizar Planta</button>
-                            <a href="/" class="btn btn-link text-black mt-2">Cancelar</a>
+                            <button type="submit" class="btn bg-danger-subtle fw-bold btn-lg py-2">
+                                <i class="bi bi-check-circle me-2"></i>Actualizar Planta
+                            </button>
+                            <a href="/" class="btn btn-link text-secondary mt-1 text-decoration-none">Cancelar y regresar</a>
                         </div>
                     </form>
                 </div>
