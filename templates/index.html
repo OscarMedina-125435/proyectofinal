@@ -5,7 +5,7 @@
 {% block content %}
 <nav class="navbar bg-body-tertiary mb-4 rounded shadow-sm">
   <div class="container-fluid d-flex justify-content-between align-items-center">
-    <span class="navbar-brand mb-0 h1">Explora el Invernadero</span>
+    <span class="navbar-brand mb-0 h1 fw-bold text-dark"><i class="bi bi-flower1 text-success me-2"></i>Explora el Invernadero</span>
     
     <div class="d-flex align-items-center gap-3">
       <form class="d-flex" role="search" action="/" method="GET">
@@ -14,7 +14,7 @@
       </form>
    
       <button class="btn btn-outline-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelFavoritos">
-        🤍 Favoritos
+        <i class="bi bi-heart-fill me-1"></i> Favoritos
       </button>
 
       <a href="{{ url_for('comentario') }}" class="btn btn-outline-danger fw-bold">
@@ -24,9 +24,10 @@
   </div>
 </nav>
 
+
 {% if administrador %}
 <div class="container mb-4 text-start">
-    <a href="{{ url_for('agregar_planta') }}" class="shadow-sm btn btn-outline-danger">
+    <a href="{{ url_for('agregar_planta') }}" class="shadow-sm btn btn-outline-danger fw-bold">
         ➕ Agregar Nueva Planta al Catálogo
     </a>
 </div>
@@ -34,56 +35,85 @@
 
 <section class="catalog-header text-center mb-5">
     <h2 class="catalog-title fw-bold">Plantas Disponibles 🌺</h2>
-    <p class="catalog-subtitle text-muted">Cuidados para cada especie.</p>
+    <p class="catalog-subtitle text-muted">Aprende a cuidar cada especie de forma exacta para evitar que se mueran.</p>
 </section>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for planta in plantas %}
     <div class="col">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
             <div role="button" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
                 <div class="ratio ratio-4x3">
                     <img src="{{ url_for('static', filename='img/' + planta.imagen) if planta.imagen else 'https://via.placeholder.com/400x300' }}" 
-                        class="img-fluid rounded-top object-fit-cover" alt="{{ planta.nombre }}">
+                        class="img-fluid object-fit-cover" alt="{{ planta.nombre }}">
                 </div>
-                <div class="card-body">
-                    <h5 class="fw-semibold text-dark">{{ planta.nombre }}</h5>
-                    <p class="card-text text-muted small">{{ planta.descripcion }}</p>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-dark mb-2">{{ planta.nombre }}</h5>
+                    <p class="card-text text-muted small mb-0">{{ planta.descripcion }}</p>
                 </div>
             </div>
             
             <div class="collapse" id="care-{{ loop.index }}">
-                <div class="card-body bg-light border-top py-3">
-                    <h6 class="fw-bold text-secondary small mb-2">📋 GUÍA DE CUIDADOS</h6>
-                    <p class="mb-1 small"><strong>Dificultad:</strong> {{ planta.dificultad }}</p>
-                    <p class="mb-1 small"><strong>Riego:</strong> {{ planta.riego }}</p>
-                    <p class="mb-0 small"><strong>Frecuencia:</strong> {{ planta.frecuencia }}</p>
+                <div class="card-body bg-light border-top p-4">
+                    <h6 class="fw-bold text-dark mb-3">
+                        <i class="bi bi-journal-check text-success me-1"></i> GUÍA DE CUIDADOS REALES
+                    </h6>
+                    
+                    <div class="mb-2 small">
+                        <span class="text-secondary fw-semibold">Dificultad:</span> 
+                        <span class="badge bg-success-subtle text-success rounded-pill px-2">{{ planta.dificultad }}</span>
+                    </div>
+
+                    <div class="mb-2 small">
+                        <i class="bi bi-brightness-high-fill text-warning me-1"></i> 
+                        <strong>Iluminación:</strong> {{ planta.luz if planta.luz else 'Interiores bien iluminados / Sombra' }}
+                    </div>
+
+                    <div class="mb-2 small">
+                        <i class="bi bi-droplet-fill text-primary me-1"></i> 
+                        <strong>Riego:</strong> {{ planta.riego }}
+                    </div>
+
+                    <div class="mb-2 small">
+                        <i class="bi bi-calendar-event text-info me-1"></i> 
+                        <strong>Frecuencia:</strong> {{ planta.frecuencia }}
+                    </div>
+
+                    {% if planta.notas_riego %}
+                    <div class="mt-2 p-2 bg-white rounded border-start border-3 border-danger small text-muted">
+                        <i class="bi bi-exclamation-triangle-fill text-danger me-1"></i> {{ planta.notas_riego }}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center pb-3">
-                <button class="btn btn-link p-0 text-decoration-none small" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
-                    ℹ️ Cuidados
+            <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center pb-3 px-4">
+                <button class="btn btn-link p-0 text-decoration-none small text-secondary fw-bold" data-bs-toggle="collapse" data-bs-target="#care-{{ loop.index }}">
+                    <i class="bi bi-info-circle me-1"></i>Ver Cuidados
                 </button>
                 
                 <div class="d-flex align-items-center gap-2">
                     {% if administrador %}
                     <a href="{{ url_for('editar_planta', id=planta._id|string) }}"
-                    class="btn btn-sm btn-outline-danger"
-                    title="Editar planta">✏️</a>
+                       class="btn btn-sm btn-outline-secondary border-0"
+                       title="Editar planta">✏️</a>
 
                     <a href="{{ url_for('eliminar_planta', id=planta._id) }}" 
-                    class="btn btn-sm btn-outline-danger"
-                    title="Eliminar planta">🗑️</a>
+                       class="btn btn-sm btn-outline-danger border-0"
+                       title="Eliminar planta">🗑️</a>
                     {% endif %}
 
                     <form action="{{ url_for('favorito') }}" method="POST" class="m-0">
                         <input type="hidden" name="planta_id" value="{{ planta._id|string }}">
                     
                         {% if planta._id|string in lista_ids_favoritos %}
-                        <button type="submit" class="btn btn-sm btn-danger shadow-sm">🤍</button>
+                        <button type="submit" class="btn btn-sm btn-danger shadow-sm text-white" title="Quitar de favoritos">
+                            <i class="bi bi-heart-fill"></i>
+                        </button>
                         {% else %}
-                        <button type="submit" class="btn btn-sm btn-outline-danger">❤️</button>
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Agregar a favoritos">
+                            <i class="bi bi-heart"></i>
+                        </button>
                         {% endif %}
                     </form>
                 </div>
@@ -94,8 +124,8 @@
     <div class="col-12 text-center py-5">
         <div class="alert alert-light border shadow-sm py-5">
             <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
-            <p class="text-muted fs-5">No se encontraron plantas que coincidan con tu búsqueda .</p>
-            <a href="/" class="btn btn-secondary mt-2">Ver todo el catálogo</a>
+            <p class="text-muted fs-5">No se encontraron plantas que coincidan con tu búsqueda.</p>
+            <a href="/" class="btn btn-danger mt-2">Ver todo el catálogo</a>
         </div>
     </div>
     {% endfor %}
@@ -103,7 +133,7 @@
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="panelFavoritos" aria-labelledby="panelFavoritosLabel">
     <div class="offcanvas-header bg-light border-bottom">
-        <h5 class="offcanvas-title fw-bold text-success" id="panelFavoritosLabel">
+        <h5 class="offcanvas-title fw-bold text-dark" id="panelFavoritosLabel">
             <i class="bi bi-heart-fill text-danger me-2"></i>Mis Favoritos
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -113,22 +143,20 @@
         {% if favoritos %}
             <div class="list-group list-group-flush">
                 {% for fav in favoritos %}
-                    <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-bottom">
+                    <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-bottom px-0">
                         <div class="d-flex align-items-center gap-3">
                             <img src="{{ url_for('static', filename='img/' + fav.imagen) if fav.imagen else 'https://via.placeholder.com/100' }}" 
                                 alt="{{ fav.nombre }}" class="rounded object-fit-cover" style="width: 45px; height: 45px;">
                             <div>
-                                <h6 class="mb-0 fw-semibold text-dark">{{ fav.nombre }}</h6>
+                                <h6 class="mb-0 fw-bold text-dark small">{{ fav.nombre }}</h6>
                                 <p class="mb-0 text-muted small text-truncate" style="max-width: 160px;">{{ fav.descripcion }}</p>
                             </div>
                         </div>
+                        <form action="/favorito" methods="POST">
+    <input type="hidden" name="planta_id" value="{{ planta._id }}">
+    <button type="submit" class="btn">❤️</button>
+</form>
                         
-                        <form action="{{ url_for('favorito') }}" method="POST" class="m-0">
-                            <input type="hidden" name="planta_id" value="{{ fav._id|string }}">
-                            <button type="submit" class="btn btn-link link-danger p-0 border-0" title="Quitar de favoritos">
-                                <i class="bi bi-trash3-fill fs-5"></i>
-                            </button>
-                        </form>
                     </div>
                 {% endfor %}
             </div>

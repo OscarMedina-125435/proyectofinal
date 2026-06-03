@@ -5,80 +5,84 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow border-0 rounded-3 mb-5">
-                
+
                 <div class="card-header bg-danger-subtle text-black py-3">
                     <h4 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2"></i>Añadir Nueva Planta</h4>
                 </div>
                 <div class="card-body p-4">
                     <form action="/agregar_planta" method="POST">
-                        
+
                         <!-- 1. NOMBRE DE LA PLANTA -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold text-secondary">Nombre de la planta</label>
-                            <input type="text" name="nombre" class="form-control form-control-lg" placeholder="Ej. Gerbera" value="{{ nombre_sugerido }}" required>
+                            <input type="text" name="nombre" class="form-control form-control-lg"
+                                placeholder="Ej. Gerbera" value="{{ nombre_sugerido }}" required>
                         </div>
-                        
+
                         <!-- 2. DESCRIPCIÓN GENERAL -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold text-secondary">Descripción General</label>
-                            <textarea name="descripcion" class="form-control" rows="3" placeholder="Planta ornamental perenne originaria de..." required></textarea>
+                            <textarea name="descripcion" class="form-control" rows="3"
+                                placeholder="Planta ornamental perenne originaria de..." required></textarea>
                         </div>
-                        
+
                         <!-- 3. RUTA DE LA IMAGEN -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold text-secondary">Nombre del archivo de imagen</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light text-secondary"><i class="bi bi-image"></i></span>
-                                <input type="text" name="imagen" class="form-control" placeholder="ej: tulipanes.jpg (Debe estar en static/img/)" required>
+                                <span class="input-group-text bg-light text-secondary"><i
+                                        class="bi bi-image"></i></span>
+                                <input type="text" name="imagen" class="form-control"
+                                    placeholder="ej: tulipanes.jpg (Debe estar en static/img/)" required>
                             </div>
                         </div>
-                        
-                        <!-- 4. DIFICULTAD Y LUZ (Faltante Importante) -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold text-secondary">Dificultad de Cuidado</label>
-                                <select name="dificultad" class="form-select">
-                                    <option value="Baja">Baja (Ideal para principiantes)</option>
-                                    <option value="Media">Media (Requiere algo de atención)</option>
-                                    <option value="Alta">Alta (Para expertos)</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <!-- ¡NUEVO CAMPO DE LUZ! -->
-                                <label class="form-label fw-semibold text-secondary">Requisitos de Luz e Invernadero</label>
-                                <input type="text" name="luz" class="form-control" placeholder="Ej. Sombra parcial o interiores muy iluminados" required>
-                            </div>
+<div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold text-secondary">Dificultad de Cuidado</label>
+                            <input type="text" name="dificultad" class="form-control"
+                                placeholder="Ej. Media (Requiere excelente ventilación)">
                         </div>
-                        
-                        <!-- 5. SECCIÓN DE RIEGO DETALLADO (Mejorado) -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold text-secondary">Frecuencia de riego</label>
-                                <input type="text" name="frecuencia" class="form-control" placeholder="Ej. Cada 2 o 3 días durante la floración" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold text-secondary">Cantidad exacta de agua</label>
-                                <input type="text" name="riego" class="form-control" placeholder="Ej. 400ml por riego (aprox. 2 vasos de agua)" required>
-                            </div>
+                        <div class="col-md-6 mb-3">
+                            <!-- ¡NUEVO CAMPO DE LUZ! -->
+                            <label class="form-label fw-semibold text-secondary">Requisitos de Luz e Invernadero</label>
+                            <input type="text" name="luz" class="form-control"
+                                placeholder="Ej. Sombra parcial o interiores muy iluminados" required>
                         </div>
-
-                        <!-- 6. NOTAS EXTRAS DE CUIDADO -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold text-secondary">Notas de riego para temporadas (Invierno/Verano)</label>
-                            <input type="text" name="notas_riego" class="form-control" placeholder="Ej. Reducir el riego en invierno cuando la planta entra en reposo" required>
-                        </div>
-                        
-                        <!-- ACCIONES -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn bg-danger-subtle fw-bold btn-lg py-2">
-                                <i class="bi bi-save me-2"></i>Guardar Planta
-                            </button>
-                            <a href="/" class="btn btn-link text-secondary mt-1 text-decoration-none">Cancelar y regresar</a>
-                        </div>
-                    </form>
                 </div>
+</div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Frecuencia de riego</label>
+                        <input type="text" name="frecuencia" class="form-control"
+                            placeholder="Ej. Cada 2 o 3 días durante la floración" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold text-secondary">Cantidad exacta de agua</label>
+                        <input type="text" name="riego" class="form-control"
+                            placeholder="Ej. 400ml por riego (aprox. 2 vasos de agua)" required>
+                    </div>
+                </div>
+
+                <!-- 6. NOTAS EXTRAS DE CUIDADO -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary">Notas de riego para temporadas
+                        (Invierno/Verano)</label>
+                    <input type="text" name="notas_riego" class="form-control"
+                        placeholder="Ej. Reducir el riego en invierno cuando la planta entra en reposo" required>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn bg-danger-subtle fw-bold btn-lg py-2">
+                        <i class="bi bi-save me-2"></i>Guardar Planta
+                    </button>
+                    <a href="/" class="btn btn-link text-secondary mt-1 text-decoration-none">Cancelar y regresar</a>
+                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

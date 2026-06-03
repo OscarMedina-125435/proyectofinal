@@ -44,20 +44,23 @@ def index():
                             favoritos=mis_favoritos,         
                             lista_ids_favoritos=lista_ids_favoritos)
 
-
 @app.route('/favorito', methods=['POST'])
 def favorito():
-    if not session.get("usuarioo"):
-        return redirect(url_for('login'))
-        
+    email_usuario = session.get('usuario') or session.get('administrador')
+    if not email_usuario:
+        flash("Debes iniciar sesión para agregar a favoritos", "warning")
+        return redirect(url_for('login')) 
+
     planta_id = request.form.get('planta_id')
-    email_usuario = session.get('email_usuario')
-    
-    if planta_id and email_usuario:
-        db_mongo.alternar_favorito(email_usuario, planta_id)
+    if planta_id:
+        exito = db_mongo.alternar_favorito(email_usuario, planta_id)
         
-    
-    return redirect(request.referrer or url_for('index'))
+        if not exito:
+            flash("Hubo un problema al actualizar tus favoritos", "danger")
+
+    return redirect(url_for('index'))
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -255,7 +258,7 @@ def procesar_sugerencia(id):
     if accion == 'aceptar':
         db_mongo.actualizar_estado_sugerencia(id, "aprobado")
         flash("Completa la información de la planta.", "success")
-        # Te manda al formulario mandando el nombre sugerido
+ 
         return redirect(url_for('agregar_planta', nombre=sugerencia.get("nombre_planta") or sugerencia.get("nombre")))
 
     elif accion == 'rechazar':
