@@ -44,9 +44,11 @@ def index():
                             favoritos=mis_favoritos,         
                             lista_ids_favoritos=lista_ids_favoritos)
 
+
 @app.route('/favorito', methods=['POST'])
 def favorito():
-    email_usuario = session.get('usuario') or session.get('administrador')
+    email_usuario = session.get('email_usuario')
+    
     if not email_usuario:
         flash("Debes iniciar sesión para agregar a favoritos", "warning")
         return redirect(url_for('login')) 
@@ -54,14 +56,10 @@ def favorito():
     planta_id = request.form.get('planta_id')
     if planta_id:
         exito = db_mongo.alternar_favorito(email_usuario, planta_id)
-        
         if not exito:
             flash("Hubo un problema al actualizar tus favoritos", "danger")
 
     return redirect(url_for('index'))
-
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -69,6 +67,7 @@ def login():
         email = request.form.get('email')
         contrasena = request.form.get('contrasena')
         usuario = db_mongo.buscar_usuario(email)
+
         
         if usuario and pwd_context.verify(contrasena, usuario.get('password')):
             session['usuarioo'] = usuario.get('nombre')
@@ -230,14 +229,12 @@ def comentario():
 
 
 @app.route('/sugerencia', methods=['POST'])
-def sugerencia_post():
+def sugerencias():
     nombre = request.form.get('planta') or request.form.get('nombre_planta')
     
     if nombre:  
         db_mongo.insertar_sugerencia(nombre)
-        flash("¡Sugerencia enviada al administrador!", "success")
-    
-    # Redirige al index automáticamente como querías al final
+        flash("¡Muchas gracias! Tu sugerencia ha sido enviada con éxito. 🌿", "success")
     return redirect(url_for('index'))
 
 

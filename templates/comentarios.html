@@ -5,18 +5,17 @@
 {% if session.get('administrador') %}
 
 <div class="container mt-5 text-center">
-    
     <h1 class="fw-bold mb-2"> Administrador</h1>
     <p class="text-muted mb-5">Revisar las sugerencias.</p>
     
-    <a href="{{ url_for('ver_sugerencias') }}" class="btn btn-danger btn-lg  shadow-sm">
+    <a href="{{ url_for('ver_sugerencias') }}" class="btn btn-danger btn-lg shadow-sm">
         Pendientes
     </a>
 </div>
 {% else %}
 
-
 <div class="container mt-5 text-center">
+
     <h4 class="fw-bold mb-4 text-dark">
         Holaa, si gustas encontrar una planta pero no está en el catálogo, te recomiendo que comentes qué planta te gustaría ver y nosotros nos encargamos de revisarla 💗
     </h4>
@@ -44,17 +43,32 @@
               <input type="text" class="form-control form-control-lg bg-light py-3" id="nombrePlanta" name="planta" placeholder="Ej. Peonía, Lirio, Girasol..." required>
             </div>
             
-          <div class="d-flex gap-2">
-  <button type="submit" class="btn btn-success flex-grow-1 btn-lg py-3 shadow-sm fw-bold">
-    <i class="bi bi-send me-2"></i> Enviar Sugerencia
-  </button>
-  
-  <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg py-3 px-4 shadow-sm">
-    Volver
-  </a>
-</div>
-        </div>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-success flex-grow-1 btn-lg py-3 shadow-sm fw-bold">
+                <i class="bi bi-send me-2"></i> Enviar Sugerencia
+              </button>
+              
+              <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg py-3 px-4 shadow-sm">
+                Volver
+              </a>
+            </div>
+          </form> </div>
 
+          <div class="container mt-5 text-center">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="row justify-content-center mb-4">
+          <div class="col-12 col-sm-10 col-md-7">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm text-start" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endwith %}
       </div>
       
     </div>
