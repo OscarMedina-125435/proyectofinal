@@ -139,34 +139,41 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     
-    <div class="offcanvas-body">
-        {% if favoritos %}
-            <div class="list-group list-group-flush">
-                {% for fav in favoritos %}
-                    <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-bottom px-0">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="{{ url_for('static', filename='img/' + fav.imagen) if fav.imagen else 'https://via.placeholder.com/100' }}" 
-                                alt="{{ fav.nombre }}" class="rounded object-fit-cover" style="width: 45px; height: 45px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold text-dark small">{{ fav.nombre }}</h6>
-                                <p class="mb-0 text-muted small text-truncate" style="max-width: 160px;">{{ fav.descripcion }}</p>
-                            </div>
+  
+        <div class="offcanvas-body">
+    {% if favoritos %}
+        <div class="list-group list-group-flush">
+            {% for fav in favoritos %}
+                <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-bottom px-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="{{ url_for('static', filename='img/' + fav.imagen) if fav.imagen else 'https://via.placeholder.com/100' }}"
+                             alt="{{ fav.nombre }}" class="rounded object-fit-cover"
+                             style="width: 45px; height: 45px;">
+
+                        <div>
+                            <h6 class="mb-0 fw-bold text-dark small">{{ fav.nombre }}</h6>
+                            <p class="mb-0 text-muted small text-truncate" style="max-width: 160px;">
+                                {{ fav.descripcion }}
+                            </p>
                         </div>
-                        <form action="/favorito" methods="POST">
-    <input type="hidden" name="planta_id" value="{{ planta._id }}">
-    <button type="submit" class="btn">❤️</button>
-</form>
-                        
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="text-center py-5">
-                <i class="bi bi-heartbreak text-muted display-4 mb-3 d-block"></i>
-                <p class="text-muted fw-medium">Aún no tienes plantas favoritas.</p>
-                <p class="small text-muted px-3">Pulsa el corazón de tus plantas preferidas para verlas aquí.</p>
-            </div>
-        {% endif %}
-    </div>
+
+                    <form action="{{ url_for('favorito') }}" method="POST" class="m-0">
+                        <input type="hidden" name="planta_id" value="{{ fav._id|string }}">
+                        <button type="submit" class="btn btn-sm text-danger">
+                            <i class="bi bi-heart-fill"></i>
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p class="text-center text-muted">
+            No tienes plantas favoritas.
+        </p>
+    {% endif %}
 </div>
+</div>
+
 {% endblock %}

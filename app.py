@@ -217,7 +217,6 @@ def editar_planta(id):
         flash("Planta actualizada correctamente.", "success")
         return redirect(url_for('index')) 
 
-    # Usamos db_mongo directamente sin el bucle for raro de antes
     planta_encontrada = db_mongo.obtener_planta_por_id(id)
     if not planta_encontrada:
         return "La planta que intentas editar no existe.", 404
@@ -231,8 +230,7 @@ def comentario():
 
 
 @app.route('/sugerencia', methods=['POST'])
-def sugerencia_post():  # Le cambié el nombre a la función para que no choque
-    # Buscamos tanto 'planta' como 'nombre_planta' por si acaso
+def sugerencia_post():
     nombre = request.form.get('planta') or request.form.get('nombre_planta')
     
     if nombre:  

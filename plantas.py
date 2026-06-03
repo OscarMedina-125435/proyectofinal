@@ -4,26 +4,22 @@ from bson.objectid import ObjectId
 from datetime import datetime
 
 class Plantas:
-    # CORREGIDO: Ahora sí tiene los dos guiones bajos oficiales de Python __init__
-    def __init__(self):
-        # Usamos la ruta desglosada de 3 nodos que no se congela por problemas de DNS locales
-        uri = "mongodb://luzzz06:UxVkjeZjqCzeNTFE@luzz-shard-00-00.jzuseoq.mongodb.net:27017,luzz-shard-00-01.jzuseoq.mongodb.net:27017,luzz-shard-00-02.jzuseoq.mongodb.net:27017/BienvenidaPlantas?ssl=true&replicaSet=atlas-jzuseoq-shard-0&authSource=admin&retryWrites=true&w=majority"
-        
-        self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
-        
-        # Estas variables DEBEN existir siempre para que app.py no truene
-        self.db = self.cliente['BienvenidaPlantas']
-        self.usuarios = self.db['usuarios']
-        self.coleccion_plantas = self.db['plantas'] 
-        self.comentarios = self.db['comentarios']
-        self.sugerencias = self.db['sugerencias']
-        
+    def __init__(self, uri: str = "mongodb+srv://luzzz06:UxVkjeZjqCzeNTFE@luzz.jzuseoq.mongodb.net/?retryWrites=true&w=majority&appName=luzz"):
         try:
+            self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
             self.cliente.admin.command('ping')
+            
+            self.db = self.cliente['BienvenidaPlantas']
+            self.usuarios = self.db['usuarios']
+            self.coleccion_plantas = self.db['plantas'] 
+            self.comentarios = self.db['comentarios']
+            self.sugerencias = self.db['sugerencias']
+            
             self.usuarios.create_index("email", unique=True)
             print("✅ Conexión a Atlas Exitosa")
         except ConnectionFailure:
-            print("❌ Error: No se pudo verificar la conexión con Atlas")
+            print("❌ Error: No se pudo conectar a MongoDB Atlas")
+            raise
     
     def crear_usuario(self, nombre, email, password):
         try:
